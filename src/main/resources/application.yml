@@ -4,3 +4,10 @@ server:
 spring:
   profiles:
     active: dev
+  thymeleaf:
+    mode: LEGACYHTML5
+security:
+  basic:
+    enabled: false
+logging:
+  level: info
