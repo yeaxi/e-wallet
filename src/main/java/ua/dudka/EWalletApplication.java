@@ -7,10 +7,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import ua.dudka.domain.Account;
-import ua.dudka.domain.Currency;
-import ua.dudka.domain.Transaction;
-import ua.dudka.repository.AccountRepository;
+import ua.dudka.employee.domain.Account;
+import ua.dudka.admin.domain.Admin;
+import ua.dudka.employee.domain.Currency;
+import ua.dudka.employee.domain.Transaction;
+import ua.dudka.employee.repository.AccountRepository;
+import ua.dudka.admin.repository.AdminRepository;
 
 import java.math.BigDecimal;
 
@@ -45,6 +47,26 @@ public class EWalletApplication {
             }
             account = accountRepository.save(account);
             devAccountNumber = account.getNumber();
+        }
+
+    }
+
+    @Configuration
+    @Profile("dev")
+    @RequiredArgsConstructor
+    public static class AdminConfig implements CommandLineRunner {
+
+        @Getter
+        private static Integer adminId = 0;
+
+        private final AdminRepository adminRepository;
+
+        @Override
+        public void run(String... strings) throws Exception {
+            Admin admin = new Admin(BigDecimal.valueOf(1000));
+
+            admin = adminRepository.save(admin);
+            adminId = admin.getId();
         }
 
     }

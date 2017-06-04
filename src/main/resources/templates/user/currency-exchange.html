@@ -67,7 +67,7 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li th:id="${currency}"
                                                 th:value="${currency}"
-                                                th:each="currency : ${T(ua.dudka.domain.Currency).values()}"
+                                                th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
                                                 onclick="selectSellSourceCurrency(this.id)">
                                                 <a href="#" th:text="${currency}">UAH</a>
                                             </li>
@@ -93,7 +93,7 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li th:id="${currency}"
                                                 th:value="${currency}"
-                                                th:each="currency : ${T(ua.dudka.domain.Currency).values()}"
+                                                th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
                                                 onclick="selectSellTargetCurrency(this.id)">
                                                 <a href="#" th:text="${currency}">UAH</a>
                                             </li>
@@ -138,7 +138,7 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li th:id="${currency}"
                                                 th:value="${currency}"
-                                                th:each="currency : ${T(ua.dudka.domain.Currency).values()}"
+                                                th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
                                                 onclick="selectBuySourceCurrency(this.id)">
                                                 <a href="#" th:text="${currency}">UAH</a>
                                             </li>
@@ -164,7 +164,7 @@
                                         <ul class="dropdown-menu dropdown-menu-right">
                                             <li th:id="${currency}"
                                                 th:value="${currency}"
-                                                th:each="currency : ${T(ua.dudka.domain.Currency).values()}"
+                                                th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
                                                 onclick="selectBuyTargetCurrency(this.id)">
                                                 <a href="#" th:text="${currency}">UAH</a>
                                             </li>
