@@ -29,6 +29,7 @@ public class EmployeeRepositoryTest extends AbstractRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
+        tearDown();
         testEmployee = Employee.builder()
                 .name("name")
                 .surname("surname")

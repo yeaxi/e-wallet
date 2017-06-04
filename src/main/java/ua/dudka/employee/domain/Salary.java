@@ -10,7 +10,6 @@ import static lombok.AccessLevel.PACKAGE;
  * @author Rostislav Dudka
  */
 @Embeddable
-@NoArgsConstructor(access = PACKAGE, force = true)
 @RequiredArgsConstructor(staticName = "of")
 @Getter
 @EqualsAndHashCode
@@ -18,4 +17,9 @@ import static lombok.AccessLevel.PACKAGE;
 public class Salary {
     private final Integer amount;
     private final Currency currency;
+
+    Salary() {
+        this.amount = 0;
+        this.currency = Currency.UAH;
+    }
 }

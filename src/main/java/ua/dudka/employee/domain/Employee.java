@@ -3,12 +3,12 @@ package ua.dudka.employee.domain;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 /**
  * @author Rostislav Dudka
  */
 @Entity
-@NoArgsConstructor(force = true)
 @Getter
 @EqualsAndHashCode(exclude = {"id", "account"})
 @ToString
@@ -23,12 +23,24 @@ public class Employee {
     private final String email;
     private String phoneNumber;
     private String position;
+    private final LocalDate enrollDate;
 
     @Embedded
     private Salary salary;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Account account;
+
+    public Employee() {
+        name = "";
+        surname = "";
+        email = "";
+        phoneNumber = "";
+        position = "";
+        enrollDate = LocalDate.now();
+        salary = new Salary();
+        account = new Account();
+    }
 
     private Employee(String name, String surname, String email, String phoneNumber, String position, Salary salary) {
         this.name = name;
@@ -38,6 +50,7 @@ public class Employee {
         this.position = position;
         this.salary = salary;
         this.account = new Account();
+        this.enrollDate = LocalDate.now();
     }
 
     public void changeSalary(Salary salary) {
@@ -45,7 +58,6 @@ public class Employee {
     }
 
     public static class EmployeeBuilder {
-
         public Employee build() {
             return new Employee(this.name, this.surname, this.email, this.phoneNumber, this.position, this.salary);
         }
