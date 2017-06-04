@@ -10,6 +10,7 @@ import ua.dudka.exception.AccountNotFoundException;
 import ua.dudka.exception.NotEnoughBalanceException;
 import ua.dudka.exception.NotValidRequestException;
 import ua.dudka.repository.AccountRepository;
+import ua.dudka.service.impl.MoneyTransferImpl;
 import ua.dudka.web.user.dto.MoneyTransferRequest;
 
 import java.math.BigDecimal;
@@ -35,22 +36,22 @@ public class MoneyTransferTest {
     private static Account currentAccount;
     private static Account destinationAccount;
 
-    private static AccountService accountService;
+    private static CurrentAccountReader currentAccountReader;
     private static MoneyTransfer moneyTransfer;
     private static AccountRepository accountRepository;
 
     @BeforeClass
     public static void setUpMocks() throws Exception {
-        accountService = mock(AccountService.class);
+        currentAccountReader = mock(CurrentAccountReader.class);
         accountRepository = mock(AccountRepository.class);
-        moneyTransfer = new MoneyTransferImpl(accountRepository, accountService);
+        moneyTransfer = new MoneyTransferImpl(accountRepository, currentAccountReader);
     }
 
     @Before
     public void setUpAccounts() throws Exception {
         currentAccount = new Account(DEFAULT_BALANCE);
         destinationAccount = new Account(DEFAULT_BALANCE);
-        when(accountService.getCurrentAccount()).thenReturn(currentAccount);
+        when(currentAccountReader.read()).thenReturn(currentAccount);
         when(accountRepository.findByNumber(eq(DESTINATION_ACCOUNT_NUMBER))).thenReturn(Optional.of(destinationAccount));
         when(accountRepository.findByNumber(eq(NOT_FOUND_DESTINATION_ACCOUNT_NUMBER))).thenReturn(Optional.empty());
     }

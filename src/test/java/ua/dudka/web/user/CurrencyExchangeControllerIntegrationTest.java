@@ -8,7 +8,7 @@ import org.springframework.http.MediaType;
 import ua.dudka.abstract_test.AbstractSystemTest;
 import ua.dudka.domain.Account;
 import ua.dudka.domain.Currency;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 import ua.dudka.service.CurrencyExchanger;
 import ua.dudka.service.CurrencyExchanger.ExchangeType;
 import ua.dudka.web.user.dto.CurrencyExchangeRequest;
@@ -33,7 +33,7 @@ import static ua.dudka.web.user.CurrencyExchangeController.Links.*;
 public class CurrencyExchangeControllerIntegrationTest extends AbstractSystemTest {
 
     @MockBean
-    private AccountService accountService;
+    private CurrentAccountReader currentAccountReader;
 
     @MockBean
     private CurrencyExchanger currencyExchanger;
@@ -47,7 +47,7 @@ public class CurrencyExchangeControllerIntegrationTest extends AbstractSystemTes
 
     @Before
     public void setUpMock() throws Exception {
-        when(accountService.getCurrentAccount()).thenReturn(testAccount);
+        when(currentAccountReader.read()).thenReturn(testAccount);
     }
 
     @Test

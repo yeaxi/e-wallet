@@ -5,6 +5,6 @@ import ua.dudka.domain.Account;
 /**
  * @author Rostislav Dudka
  */
-public interface AccountService {
-    Account getCurrentAccount();
+public interface CurrentAccountReader {
+    Account read();
 }

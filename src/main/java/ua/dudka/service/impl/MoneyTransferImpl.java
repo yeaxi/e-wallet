@@ -1,4 +1,4 @@
-package ua.dudka.service;
+package ua.dudka.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -8,6 +8,8 @@ import ua.dudka.domain.Transaction;
 import ua.dudka.exception.AccountNotFoundException;
 import ua.dudka.exception.NotValidRequestException;
 import ua.dudka.repository.AccountRepository;
+import ua.dudka.service.CurrentAccountReader;
+import ua.dudka.service.MoneyTransfer;
 import ua.dudka.web.user.dto.MoneyTransferRequest;
 
 import java.math.BigDecimal;
@@ -23,14 +25,14 @@ import static ua.dudka.domain.Transaction.Type.WITHDRAWAL;
 @Transactional
 public class MoneyTransferImpl implements MoneyTransfer {
     private final AccountRepository accountRepository;
-    private final AccountService accountService;
+    private final CurrentAccountReader currentAccountReader;
 
 
     @Override
     public void transfer(MoneyTransferRequest request) {
         validate(request);
 
-        Account sourceAccount = accountService.getCurrentAccount();
+        Account sourceAccount = currentAccountReader.read();
         sourceAccount.applyTransaction(new Transaction(request.getAmount(), WITHDRAWAL, request.getCurrency()));
         accountRepository.save(sourceAccount);
 

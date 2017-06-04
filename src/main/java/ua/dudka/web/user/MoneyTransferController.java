@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ua.dudka.domain.Currency;
 import ua.dudka.exception.AccountNotFoundException;
 import ua.dudka.exception.MoneyTransferException;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 import ua.dudka.service.MoneyTransfer;
 import ua.dudka.web.user.dto.MoneyTransferRequest;
 
@@ -25,12 +25,12 @@ import static ua.dudka.web.user.MoneyTransferController.Links.TRANSFER_MONEY_URL
 @RequiredArgsConstructor
 public class MoneyTransferController {
 
-    private final AccountService accountService;
+    private final CurrentAccountReader currentAccountReader;
     private final MoneyTransfer moneyTransfer;
 
     @GetMapping(MONEY_TRANSFER_PAGE_URL)
     public String getPage(Model model) {
-        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("account", currentAccountReader.read());
         return "/user/money-transfer";
     }
 
@@ -46,7 +46,7 @@ public class MoneyTransferController {
         } catch (MoneyTransferException | AccountNotFoundException e) {
             model.addAttribute("error", e.getMessage());
         }
-        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("account", currentAccountReader.read());
         return "/user/money-transfer";
     }
 

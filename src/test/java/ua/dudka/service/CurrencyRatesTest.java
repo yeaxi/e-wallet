@@ -2,6 +2,7 @@ package ua.dudka.service;
 
 import org.junit.Test;
 import ua.dudka.domain.Currency;
+import ua.dudka.service.impl.CurrencyRatesImpl;
 
 import java.math.BigDecimal;
 

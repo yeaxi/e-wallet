@@ -4,6 +4,7 @@ import org.junit.Before;
 import ua.dudka.domain.Account;
 import ua.dudka.domain.Currency;
 import ua.dudka.repository.AccountRepository;
+import ua.dudka.service.impl.CurrencyExchangerImpl;
 
 import java.math.BigDecimal;
 
@@ -34,12 +35,12 @@ public abstract class AbstractCurrencyExchangeTest {
 
         accountRepository = mock(AccountRepository.class);
 
-        AccountService accountService = mock(AccountService.class);
-        when(accountService.getCurrentAccount()).thenReturn(testAccount);
+        CurrentAccountReader currentAccountReader = mock(CurrentAccountReader.class);
+        when(currentAccountReader.read()).thenReturn(testAccount);
 
         CurrencyRates ratesService = mock(CurrencyRates.class);
         when(ratesService.getRate(eq(CURRENCY_TO_SELL), eq(CURRENCY_TO_BUY))).thenReturn(UAH_TO_USD_RATE);
 
-        currencyExchanger = new CurrencyExchangerImpl(accountRepository, accountService, ratesService);
+        currencyExchanger = new CurrencyExchangerImpl(accountRepository, currentAccountReader, ratesService);
     }
 }

@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import ua.dudka.abstract_test.AbstractWebIntegrationTest;
 import ua.dudka.domain.Account;
 import ua.dudka.domain.Currency;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 import ua.dudka.service.MoneyTransfer;
 import ua.dudka.web.user.dto.MoneyTransferRequest;
 
@@ -34,7 +34,7 @@ import static ua.dudka.web.user.MoneyTransferController.Links.TRANSFER_MONEY_URL
 public class MoneyTransferControllerIntegrationTest extends AbstractWebIntegrationTest {
 
     @MockBean
-    private AccountService accountService;
+    private CurrentAccountReader currentAccountReader;
 
     @MockBean
     private MoneyTransfer moneyTransfer;
@@ -48,7 +48,7 @@ public class MoneyTransferControllerIntegrationTest extends AbstractWebIntegrati
 
     @Before
     public void setUpMock() throws Exception {
-        when(accountService.getCurrentAccount()).thenReturn(testAccount);
+        when(currentAccountReader.read()).thenReturn(testAccount);
     }
 
     @Test

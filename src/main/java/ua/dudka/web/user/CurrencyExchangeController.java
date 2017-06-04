@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.dudka.domain.Currency;
 import ua.dudka.exception.MoneyTransferException;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 import ua.dudka.service.CurrencyExchanger;
 import ua.dudka.service.CurrencyExchanger.ExchangeType;
 import ua.dudka.web.user.dto.CurrencyExchangeRequest;
@@ -25,12 +25,12 @@ import static ua.dudka.web.user.CurrencyExchangeController.Links.CURRENCY_EXCHAN
 @RequiredArgsConstructor
 public class CurrencyExchangeController {
 
-    private final AccountService accountService;
+    private final CurrentAccountReader currentAccountReader;
     private final CurrencyExchanger currencyExchanger;
 
     @GetMapping(CURRENCY_EXCHANGE_PAGE_URL)
     public String getPage(Model model) {
-        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("account", currentAccountReader.read());
         return "/user/currency-exchange";
     }
 
@@ -48,7 +48,7 @@ public class CurrencyExchangeController {
         } catch (MoneyTransferException e) {
             model.addAttribute("error", e.getMessage());
         }
-        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("account", currentAccountReader.read());
         return "/user/currency-exchange";
     }
 

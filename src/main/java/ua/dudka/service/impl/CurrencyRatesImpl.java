@@ -1,10 +1,11 @@
-package ua.dudka.service;
+package ua.dudka.service.impl;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.dudka.domain.Currency;
+import ua.dudka.service.CurrencyRates;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

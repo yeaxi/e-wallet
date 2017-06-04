@@ -12,7 +12,7 @@ import ua.dudka.domain.Account;
 import ua.dudka.domain.Currency;
 import ua.dudka.domain.Transaction;
 import ua.dudka.domain.Wallet;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 
 import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
@@ -39,7 +39,7 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
             "                        <td>%s</td>";
 
     @MockBean
-    private AccountService accountService;
+    private CurrentAccountReader currentAccountReader;
 
     private static Account testAccount;
 
@@ -53,7 +53,7 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
     @Before
     public void setUpMock() throws Exception {
 
-        when(accountService.getCurrentAccount()).thenReturn(testAccount);
+        when(currentAccountReader.read()).thenReturn(testAccount);
     }
 
     @After

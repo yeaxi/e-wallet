@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import ua.dudka.service.AccountService;
+import ua.dudka.service.CurrentAccountReader;
 
 import static ua.dudka.web.user.DashboardController.Links.DASHBOARD_PAGE_URL;
 
@@ -15,11 +15,11 @@ import static ua.dudka.web.user.DashboardController.Links.DASHBOARD_PAGE_URL;
 @RequiredArgsConstructor
 public class DashboardController {
 
-    private final AccountService accountService;
+    private final CurrentAccountReader currentAccountReader;
 
     @GetMapping(DASHBOARD_PAGE_URL)
     public String getPage(Model model) {
-        model.addAttribute("account", accountService.getCurrentAccount());
+        model.addAttribute("account", currentAccountReader.read());
         return "/user/dashboard";
     }
 
