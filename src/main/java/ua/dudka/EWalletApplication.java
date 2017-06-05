@@ -7,10 +7,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import ua.dudka.employee.domain.*;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import ua.dudka.admin.domain.Admin;
-import ua.dudka.employee.repository.AccountRepository;
 import ua.dudka.admin.repository.AdminRepository;
+import ua.dudka.employee.domain.*;
+import ua.dudka.employee.repository.AccountRepository;
 import ua.dudka.employee.repository.EmployeeRepository;
 
 import java.math.BigDecimal;
@@ -63,7 +64,7 @@ public class EWalletApplication {
 
         @Override
         public void run(String... strings) throws Exception {
-            Admin admin = new Admin(BigDecimal.valueOf(1000));
+            Admin admin = new Admin(BigDecimal.valueOf(2_000_000));
 
             admin = adminRepository.save(admin);
             adminId = admin.getId();
@@ -75,10 +76,17 @@ public class EWalletApplication {
                         .email("pretty_long_email@mail.com" + i)
                         .phoneNumber("+38050000000" + i)
                         .position("Senior Java Developer" + i)
-                        .salary(Salary.of(20_000 * i, Currency.UAH))
+                        .salary(Salary.of(BigDecimal.valueOf(20_000 * i), Currency.UAH))
                         .build());
             }
         }
 
     }
+
+    @Configuration
+    @Profile("pay-salary")
+    @EnableScheduling
+    public static class SalaryPaymentConfig {
+    }
+
 }

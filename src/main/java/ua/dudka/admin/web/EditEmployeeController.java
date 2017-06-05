@@ -17,6 +17,8 @@ import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.domain.Salary;
 import ua.dudka.employee.repository.EmployeeRepository;
 
+import java.math.BigDecimal;
+
 import static ua.dudka.admin.web.EditEmployeeController.Links.EDIT_EMPLOYEE_PAGE_URL;
 import static ua.dudka.admin.web.EditEmployeeController.Links.EDIT_EMPLOYEE_URL;
 
@@ -43,7 +45,7 @@ public class EditEmployeeController {
     public String editEmployee(
             @RequestParam Integer employeeId,
             @RequestParam String newPosition,
-            @RequestParam Integer newSalaryAmount,
+            @RequestParam BigDecimal newSalaryAmount,
             @RequestParam Currency newSalaryCurrency,
             Model model
     ) {

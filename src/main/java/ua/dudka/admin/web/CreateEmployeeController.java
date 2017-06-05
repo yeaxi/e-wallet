@@ -14,6 +14,8 @@ import ua.dudka.admin.web.dto.CreateEmployeeRequest;
 import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.domain.Salary;
 
+import java.math.BigDecimal;
+
 import static ua.dudka.admin.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_PAGE_URL;
 import static ua.dudka.admin.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_URL;
 
@@ -41,7 +43,7 @@ public class CreateEmployeeController {
             @RequestParam("email") String email,
             @RequestParam("phoneNumber") String phoneNumber,
             @RequestParam("position") String position,
-            @RequestParam("salaryAmount") Integer salaryAmount,
+            @RequestParam("salaryAmount") BigDecimal salaryAmount,
             @RequestParam("salaryCurrency") Currency salaryCurrency,
             Model model
     ) {

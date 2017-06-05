@@ -10,6 +10,7 @@ import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.domain.Employee;
 import ua.dudka.employee.domain.Salary;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,7 +37,7 @@ public class EmployeeRepositoryTest extends AbstractRepositoryTest {
                 .email("email@mail.com")
                 .phoneNumber("+380500000000")
                 .position("position")
-                .salary(Salary.of(3800, Currency.USD))
+                .salary(Salary.of(BigDecimal.valueOf(3800), Currency.USD))
                 .build();
     }
 
@@ -102,7 +103,7 @@ public class EmployeeRepositoryTest extends AbstractRepositoryTest {
     public void repositoryShouldUpdateEmployee() throws Exception {
         Employee savedEmployee = repository.save(testEmployee);
 
-        Salary expectedSalary = Salary.of(10_000, Currency.UAH);
+        Salary expectedSalary = Salary.of(BigDecimal.valueOf(10_000), Currency.UAH);
 
         savedEmployee.changeSalary(expectedSalary);
 

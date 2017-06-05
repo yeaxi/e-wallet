@@ -1,25 +1,31 @@
 package ua.dudka.employee.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Value;
 
 import javax.persistence.Embeddable;
-
-import static lombok.AccessLevel.PACKAGE;
+import java.math.BigDecimal;
 
 /**
  * @author Rostislav Dudka
  */
 @Embeddable
-@RequiredArgsConstructor(staticName = "of")
-@Getter
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor(staticName = "of")
+@Value
 public class Salary {
-    private final Integer amount;
-    private final Currency currency;
+    BigDecimal amount;
+    Currency currency;
 
     Salary() {
-        this.amount = 0;
+        this.amount = BigDecimal.ZERO;
         this.currency = Currency.UAH;
+    }
+
+    //why JPA, why???
+    void setAmount(BigDecimal amount) {
+    }
+
+    void setCurrency(Currency currency) {
+
     }
 }

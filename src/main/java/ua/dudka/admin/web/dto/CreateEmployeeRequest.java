@@ -4,6 +4,8 @@ import lombok.*;
 import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.domain.Salary;
 
+import java.math.BigDecimal;
+
 /**
  * @author Rostislav Dudka
  */
@@ -18,5 +20,5 @@ public class CreateEmployeeRequest {
     private String email = "";
     private String phoneNumber = "";
     private String position = "";
-    private Salary salary = Salary.of(0, Currency.UAH);
+    private Salary salary = Salary.of(BigDecimal.ZERO, Currency.UAH);
 }

@@ -64,6 +64,9 @@ public class Employee {
         this.position = newPosition;
     }
 
+    public void paySalary() {
+    }
+
     public static class EmployeeBuilder {
         public Employee build() {
             return new Employee(this.name, this.surname, this.email, this.phoneNumber, this.position, this.salary);

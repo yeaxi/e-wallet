@@ -10,6 +10,7 @@ import ua.dudka.employee.domain.Employee;
 import ua.dudka.employee.domain.Salary;
 import ua.dudka.employee.repository.EmployeeRepository;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -38,7 +39,7 @@ public class EmployeeEditorTest {
                 .email("mail@mail.com")
                 .phoneNumber("005050550")
                 .position("middle")
-                .salary(Salary.of(2000, Currency.USD))
+                .salary(Salary.of(BigDecimal.valueOf(2000), Currency.USD))
                 .build();
 
         employeeRepository = mock(EmployeeRepository.class);
@@ -59,7 +60,7 @@ public class EmployeeEditorTest {
     }
 
     private EditEmployeeRequest buildEditEmployeeRequest() {
-        Salary salary = Salary.of(4000, Currency.USD);
+        Salary salary = Salary.of(BigDecimal.valueOf(4000), Currency.USD);
         return new EditEmployeeRequest(testEmployee.getId(), "Senior", salary);
     }
 
@@ -74,7 +75,7 @@ public class EmployeeEditorTest {
 
     @Test(expected = EmployeeNotFoundException.class)
     public void ifRequestHasNonexistentEmployeeIdEditShouldThrowException() throws Exception {
-        Salary salary = Salary.of(4000, Currency.USD);
+        Salary salary = Salary.of(BigDecimal.valueOf(4000), Currency.USD);
         EditEmployeeRequest request = new EditEmployeeRequest(NONEXISTENT_EMPLOYEE_ID, "Senior", salary);
 
         employeeEditor.edit(request);

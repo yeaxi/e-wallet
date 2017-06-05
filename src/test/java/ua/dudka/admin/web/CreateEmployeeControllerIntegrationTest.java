@@ -15,6 +15,8 @@ import ua.dudka.admin.service.AdminReader;
 import ua.dudka.admin.service.EmployeeCreator;
 import ua.dudka.admin.web.dto.CreateEmployeeRequest;
 
+import java.math.BigDecimal;
+
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -81,7 +83,7 @@ public class CreateEmployeeControllerIntegrationTest extends AbstractWebIntegrat
                 .email("email@mail.com")
                 .phoneNumber("+380500000000")
                 .position("position")
-                .salary(Salary.of(3800, Currency.USD))
+                .salary(Salary.of(BigDecimal.valueOf(3800), Currency.USD))
                 .build();
     }
 }

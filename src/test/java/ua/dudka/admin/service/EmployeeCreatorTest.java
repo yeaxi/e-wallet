@@ -10,6 +10,7 @@ import ua.dudka.admin.exception.EmployeeExistsException;
 import ua.dudka.employee.repository.EmployeeRepository;
 import ua.dudka.admin.web.dto.CreateEmployeeRequest;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.mockito.Matchers.anyString;
@@ -62,7 +63,7 @@ public class EmployeeCreatorTest {
                 .email("email@mail.com")
                 .phoneNumber("+380500000000")
                 .position("position")
-                .salary(Salary.of(3800, Currency.USD))
+                .salary(Salary.of(BigDecimal.valueOf(3800), Currency.USD))
                 .build();
     }
 

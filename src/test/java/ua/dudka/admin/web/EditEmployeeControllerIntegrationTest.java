@@ -16,6 +16,9 @@ import ua.dudka.employee.domain.Employee;
 import ua.dudka.employee.domain.Salary;
 import ua.dudka.employee.repository.EmployeeRepository;
 
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.valueOf;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -55,7 +58,7 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
                 .email("email@mail.com")
                 .phoneNumber("050505055")
                 .position("middle")
-                .salary(Salary.of(1000, Currency.USD))
+                .salary(Salary.of(valueOf(1000), Currency.USD))
                 .build();
     }
 
@@ -74,7 +77,7 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
 
     @Test
     public void editEmployeeRequestShouldInvokeProcessingInServiceAndRefreshPage() throws Exception {
-        EditEmployeeRequest request = new EditEmployeeRequest(EMPLOYEE_ID, "senior", Salary.of(4000, Currency.USD));
+        EditEmployeeRequest request = new EditEmployeeRequest(EMPLOYEE_ID, "senior", Salary.of(valueOf(4000), Currency.USD));
 
         mockMvc.perform(post(EDIT_EMPLOYEE_URL)
                 .param("employeeId", EMPLOYEE_ID + "")
