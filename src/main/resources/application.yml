@@ -3,14 +3,30 @@ server:
 
 spring:
   profiles:
-    active: dev, pay-salary
+    active: dev, pay-salary, security
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
 
+logging:
+  level: info
+
+---
+spring:
+  profiles: dev
+
+debug: true
+
+---
+spring:
+  profiles: security
+security:
+  basic:
+    enabled: true
+
+---
+spring:
+  profiles: no-security
 security:
   basic:
     enabled: false
-
-logging:
-  level: info

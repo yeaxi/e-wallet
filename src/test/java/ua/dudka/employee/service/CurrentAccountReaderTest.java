@@ -2,10 +2,13 @@ package ua.dudka.employee.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.dudka.EWalletApplication;
+import ua.dudka.config.EmployeeConfig;
 import ua.dudka.employee.domain.Account;
-import ua.dudka.employee.repository.AccountRepository;
+import ua.dudka.employee.domain.Employee;
+import ua.dudka.employee.repository.EmployeeRepository;
 import ua.dudka.employee.service.impl.CurrentAccountReaderImpl;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
@@ -16,8 +19,8 @@ import static org.mockito.Mockito.*;
  */
 public class CurrentAccountReaderTest {
 
-    private static final Integer DEV_ACCOUNT_ID = EWalletApplication.DevConfig.getDevAccountNumber();
-    private AccountRepository accountRepository;
+    private static final String DEV_EMPLOYEE_EMAIL = EmployeeConfig.DEV_EMPLOYEE_USERNAME;
+    private EmployeeRepository employeeRepository;
     private Account testAccount;
 
 
@@ -25,12 +28,13 @@ public class CurrentAccountReaderTest {
 
     @Before
     public void setUp() throws Exception {
-        accountRepository = mock(AccountRepository.class);
+        employeeRepository = mock(EmployeeRepository.class);
 
         testAccount = new Account();
-        when(accountRepository.findOne(eq(DEV_ACCOUNT_ID))).thenReturn(testAccount);
+        Employee employee = Employee.builder().account(testAccount).build();
+        when(employeeRepository.findByEmail(eq(DEV_EMPLOYEE_EMAIL))).thenReturn(Optional.of(employee));
 
-        currentAccountReader = new CurrentAccountReaderImpl(accountRepository);
+        currentAccountReader = new CurrentAccountReaderImpl(employeeRepository);
     }
 
     @Test
@@ -39,7 +43,7 @@ public class CurrentAccountReaderTest {
 
         assertEquals(testAccount, currentAccount);
 
-        verify(accountRepository).findOne(eq(DEV_ACCOUNT_ID));
+        verify(employeeRepository).findByEmail(eq(DEV_EMPLOYEE_EMAIL));
     }
 
 }

@@ -2,25 +2,23 @@ package ua.dudka.admin.service;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.dudka.admin.repository.AdminRepository;
-import ua.dudka.EWalletApplication;
 import ua.dudka.admin.domain.Admin;
+import ua.dudka.admin.repository.AdminRepository;
 import ua.dudka.admin.service.impl.AdminReaderImpl;
+import ua.dudka.config.AdminConfig;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Rostislav Dudka
  */
 public class AdminReaderTest {
 
-    private static final int ADMIN_ID = EWalletApplication.AdminConfig.getAdminId();
+    private static final int ADMIN_ID = AdminConfig.getAdminId();
     private Admin testAdmin;
 
     private AdminRepository adminRepository;

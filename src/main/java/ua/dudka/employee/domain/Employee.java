@@ -24,6 +24,7 @@ public class Employee {
     private final String name;
     private final String surname;
     private final String email;
+    private String password;
     private String phoneNumber;
     private String position;
     private final LocalDate enrollDate;
@@ -38,6 +39,7 @@ public class Employee {
         name = "";
         surname = "";
         email = "";
+        password = "";
         phoneNumber = "";
         position = "";
         enrollDate = LocalDate.now();
@@ -49,6 +51,7 @@ public class Employee {
         this.name = name;
         this.surname = surname;
         this.email = email;
+        this.password = phoneNumber;
         this.phoneNumber = phoneNumber;
         this.position = position;
         this.salary = salary;

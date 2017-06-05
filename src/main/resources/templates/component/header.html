@@ -33,8 +33,12 @@
                 <li><a href="#">Account No. [[${account.number}]] </a></li>
                 <li><a href="#">Settings</a></li>
                 <li><a href="#">Profile</a></li>
-                <li><a href="#">Logout</a></li>
+
+                <li onclick="document.getElementById('logout').submit()"><a href="#">Logout</a></li>
             </ul>
+            <form id="logout" hidden="hidden" th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout"/>
+            </form>
         </div>
     </div>
 </nav>

@@ -2,10 +2,10 @@ package ua.dudka.admin.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.dudka.admin.repository.AdminRepository;
-import ua.dudka.EWalletApplication;
 import ua.dudka.admin.domain.Admin;
+import ua.dudka.admin.repository.AdminRepository;
 import ua.dudka.admin.service.AdminReader;
+import ua.dudka.config.AdminConfig;
 
 /**
  * @author Rostislav Dudka
@@ -17,6 +17,6 @@ public class AdminReaderImpl implements AdminReader {
 
     @Override
     public Admin read() {
-        return adminRepository.findOne(EWalletApplication.AdminConfig.getAdminId());
+        return adminRepository.findOne(AdminConfig.getAdminId());
     }
 }

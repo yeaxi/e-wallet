@@ -28,8 +28,12 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Settings</a></li>
-                <li><a href="#">Logout</a></li>
+
+                <li onclick="document.getElementById('logout').submit()"><a href="#">Logout</a></li>
             </ul>
+            <form id="logout" hidden="hidden" th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout"/>
+            </form>
         </div>
     </div>
 </nav>
