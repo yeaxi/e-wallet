@@ -1,18 +1,18 @@
 package ua.dudka.admin.web;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ua.dudka.employee.domain.Currency;
-import ua.dudka.employee.domain.Salary;
 import ua.dudka.admin.exception.EmployeeExistsException;
 import ua.dudka.admin.service.AdminReader;
 import ua.dudka.admin.service.EmployeeCreator;
 import ua.dudka.admin.web.dto.CreateEmployeeRequest;
+import ua.dudka.employee.domain.Currency;
+import ua.dudka.employee.domain.Salary;
 
 import static ua.dudka.admin.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_PAGE_URL;
 import static ua.dudka.admin.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_URL;
@@ -22,7 +22,7 @@ import static ua.dudka.admin.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_
  */
 @Controller
 @RequiredArgsConstructor
-@Log4j2
+@Slf4j
 public class CreateEmployeeController {
 
     private final AdminReader adminReader;

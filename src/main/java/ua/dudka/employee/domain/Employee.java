@@ -1,6 +1,9 @@
 package ua.dudka.employee.domain;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -55,6 +58,10 @@ public class Employee {
 
     public void changeSalary(Salary salary) {
         this.salary = salary;
+    }
+
+    public void changePosition(String newPosition) {
+        this.position = newPosition;
     }
 
     public static class EmployeeBuilder {

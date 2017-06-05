@@ -6,8 +6,11 @@ spring:
     active: dev
   thymeleaf:
     mode: LEGACYHTML5
+    cache: false
+
 security:
   basic:
     enabled: false
+
 logging:
   level: info

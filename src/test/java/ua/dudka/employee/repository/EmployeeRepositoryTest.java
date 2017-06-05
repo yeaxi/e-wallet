@@ -67,6 +67,17 @@ public class EmployeeRepositoryTest extends AbstractRepositoryTest {
     }
 
     @Test
+    public void findByIdShouldReturnCreatedEmployee() throws Exception {
+        Employee employee = repository.save(testEmployee);
+
+        Optional<Employee> actualEmployee = repository.findById(employee.getId());
+
+        assertTrue(actualEmployee.isPresent());
+        assertEquals(employee, actualEmployee.get());
+
+    }
+
+    @Test
     public void findByEmailShouldReturnCreatedEmployee() throws Exception {
         Employee employee = repository.save(testEmployee);
 
