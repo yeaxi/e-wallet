@@ -31,14 +31,14 @@
 <body th:inline="text">
 
 <!--header-->
-<div th:replace="/admin/component/header ::entry"></div>
+<div th:replace="admin/component/header ::entry"></div>
 <!--end-header-->
 
 
 <div class="container-fluid" th:object="${employee}">
     <div class="row">
         <!--left-nav-menu-->
-        <div th:replace="/admin/component/left-nav-menu ::entry"></div>
+        <div th:replace="admin/component/left-nav-menu ::entry"></div>
         <!--end left-nav-menu-->
 
         <!--main-->

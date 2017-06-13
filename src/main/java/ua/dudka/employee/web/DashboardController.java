@@ -20,7 +20,7 @@ public class DashboardController {
     @GetMapping(DASHBOARD_PAGE_URL)
     public String getPage(Model model) {
         model.addAttribute("account", currentAccountReader.read());
-        return "/user/dashboard";
+        return "user/dashboard";
     }
 
 

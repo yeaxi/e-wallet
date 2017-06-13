@@ -18,21 +18,25 @@
             <a class="navbar-brand" href="#">E-wallet</a>
 
             <!--wallets-->
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="uah">[[${account.uahWallet.balance}]] [[${account.uahWallet.currency}]]</li>
-                    <li class="usd">[[${account.usdWallet.balance}]] [[${account.usdWallet.currency}]]</li>
-                    <li class="eur">[[${account.eurWallet.balance}]] [[${account.eurWallet.currency}]]</li>
-                    <li class="bit">[[${account.btcWallet.balance}]] [[${account.btcWallet.currency}]]</li>
+                <ul class="nav navbar-nav">
+                    <li><a href="#">
+                        <p th:text="${account.uahWallet.balance +' '+ account.uahWallet.currency}"></p>
+                    </a></li>
+                    <li><a href="#">
+                        <p th:text="${account.usdWallet.balance +' '+ account.usdWallet.currency}"></p>
+                    </a></li>
+                    <li><a href="#">
+                        <p th:text="${account.eurWallet.balance +' '+  account.eurWallet.currency}"></p>
+                    </a></li>
+                    <li><a href="#">
+                        <p th:text="${account.btcWallet.balance +' '+ account.btcWallet.currency}"></p>
+                    </a></li>
                 </ul>
-            </div>
-            <!--end wallets-->
+            <!--/wallets-->
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">Account No. [[${account.number}]] </a></li>
-                <li><a href="#">Settings</a></li>
-                <li><a href="#">Profile</a></li>
 
                 <li onclick="document.getElementById('logout').submit()"><a href="#">Logout</a></li>
             </ul>

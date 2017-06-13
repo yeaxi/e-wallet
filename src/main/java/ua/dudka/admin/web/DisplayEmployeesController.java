@@ -25,7 +25,7 @@ public class DisplayEmployeesController {
         model.addAttribute("admin", adminReader.read());
         model.addAttribute("employees", employeeRepository.findAll());
 
-        return "/admin/employees";
+        return "admin/employees";
     }
 
     public static class Links {

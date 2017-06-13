@@ -33,7 +33,7 @@ public class CreateEmployeeController {
     @GetMapping(CREATE_EMPLOYEE_PAGE_URL)
     public String getPage(Model model) {
         model.addAttribute("admin", adminReader.read());
-        return "/admin/create-employee";
+        return getPathToPage();
     }
 
     @PostMapping(CREATE_EMPLOYEE_URL)
@@ -58,7 +58,11 @@ public class CreateEmployeeController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("admin", adminReader.read());
-        return "/admin/create-employee";
+        return getPathToPage();
+    }
+
+    private String getPathToPage() {
+        return "admin/create-employee";
     }
 
     public static class Links {

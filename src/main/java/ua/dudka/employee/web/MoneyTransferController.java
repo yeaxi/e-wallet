@@ -31,7 +31,11 @@ public class MoneyTransferController {
     @GetMapping(MONEY_TRANSFER_PAGE_URL)
     public String getPage(Model model) {
         model.addAttribute("account", currentAccountReader.read());
-        return "/user/money-transfer";
+        return getPathToPage();
+    }
+
+    private String getPathToPage() {
+        return "user/money-transfer";
     }
 
     @PostMapping(TRANSFER_MONEY_URL)
@@ -47,7 +51,7 @@ public class MoneyTransferController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("account", currentAccountReader.read());
-        return "/user/money-transfer";
+        return getPathToPage();
     }
 
     public static class Links {

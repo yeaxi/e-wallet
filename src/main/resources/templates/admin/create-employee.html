@@ -9,7 +9,7 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Add account</title>
+    <title>Create employee</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -35,24 +35,24 @@
 <body th:inline="text">
 
 <!--header-->
-<div th:replace="/admin/component/header ::entry"></div>
+<div th:replace="admin/component/header ::entry"></div>
 <!--end-header-->
 
 
 <div class="container-fluid">
     <div class="row">
         <!--left-nav-menu-->
-        <div th:replace="/admin/component/left-nav-menu ::entry"></div>
+        <div th:replace="admin/component/left-nav-menu ::entry"></div>
         <!--end left-nav-menu-->
 
         <!--main-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-            <h2 class="sub-header">Create Account</h2>
+            <h2 class="sub-header">Create Employee</h2>
 
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">You can send money to another account</div>
+                <div class="panel-heading">You can add new employee to the system</div>
 
                 <form action="#" th:action="@{/admin/create-employee/send}" method="post">
                     <div class="panel-body" th:class="${error}? 'panel-danger' ">
@@ -63,7 +63,7 @@
                                     <label for="name">Name:</label>
                                     <input type="text" name="name" id="name"
                                            class="form-control" value=""
-                                           aria-label="...">
+                                           aria-label="..." required="required">
 
                                 </div>
                                 <div class="input-group">
@@ -71,21 +71,21 @@
                                     <label for="surname">Surname:</label>
                                     <input type="text" name="surname" id="surname"
                                            class="form-control" value=""
-                                           aria-label="...">
+                                           aria-label="..." required="required">
 
                                 </div>
                                 <div class="input-group">
                                     <label for="email">email:</label>
                                     <input type="email" name="email" id="email"
                                            class="form-control" value=""
-                                           aria-label="...">
+                                           aria-label="..." required="required">
 
                                 </div>
                                 <div class="input-group">
                                     <label for="phoneNumber">Phone number:</label>
                                     <input type="text" name="phoneNumber" id="phoneNumber"
                                            class="form-control" value=""
-                                           aria-label="...">
+                                           aria-label="..." required="required">
 
 
                                 </div>
@@ -93,15 +93,15 @@
                                     <label for="position">Position :</label>
                                     <input type="text" name="position" id="position"
                                            class="form-control" value=""
-                                           aria-label="...">
+                                           aria-label="..." required="required">
 
                                 </div>
                                 <div class="input-group">
                                     <label for="salaryAmount">Month sallary :</label>
                                     <input type="text" name="salaryAmount" id="salaryAmount"
-                                           class="form-control" value=""
-                                           aria-label="...">
-                                    <select name="salaryCurrency">
+                                           class="form-control" value="0"
+                                           aria-label="..." required="required">
+                                    <select name="salaryCurrency" required="required">
                                         <option
                                                 th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
                                                 th:value="${currency}"

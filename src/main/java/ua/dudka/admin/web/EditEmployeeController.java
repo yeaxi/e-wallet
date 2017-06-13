@@ -38,7 +38,7 @@ public class EditEmployeeController {
     public String getPage(@PathVariable("id") Integer employeeId, Model model) {
         model.addAttribute("admin", adminReader.read());
         model.addAttribute("employee", employeeRepository.findOne(employeeId));
-        return "/admin/edit-employee";
+        return getPathToPage();
     }
 
     @PostMapping(EDIT_EMPLOYEE_URL)
@@ -60,8 +60,12 @@ public class EditEmployeeController {
             model.addAttribute("admin", adminReader.read());
             model.addAttribute("employee", employeeRepository.findOne(employeeId));
             model.addAttribute("error", e.getMessage());
-            return "/admin/edit-employee";
+            return getPathToPage();
         }
+    }
+
+    private String getPathToPage() {
+        return "admin/edit-employee";
     }
 
     public static class Links {

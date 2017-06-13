@@ -18,16 +18,17 @@
             <a class="navbar-brand" href="#">E-wallet</a>
 
             <!--wallets-->
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li th:each="wallet : ${admin.wallets}">[[${wallet.balance}]] [[${wallet.currency}]]</li>
-                </ul>
-            </div>
+            <ul class="nav navbar-nav">
+                    <li th:each="wallet : ${admin.wallets}">
+                        <a href="#">
+                            <p th:text="${wallet.balance +' '+ wallet.currency}"></p>
+                        </a>
+                        </li>
+            </ul>
             <!--end wallets-->
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Settings</a></li>
 
                 <li onclick="document.getElementById('logout').submit()"><a href="#">Logout</a></li>
             </ul>

@@ -31,7 +31,11 @@ public class CurrencyExchangeController {
     @GetMapping(CURRENCY_EXCHANGE_PAGE_URL)
     public String getPage(Model model) {
         model.addAttribute("account", currentAccountReader.read());
-        return "/user/currency-exchange";
+        return gePathToPage();
+    }
+
+    private String gePathToPage() {
+        return "user/currency-exchange";
     }
 
 
@@ -49,7 +53,7 @@ public class CurrencyExchangeController {
             model.addAttribute("error", e.getMessage());
         }
         model.addAttribute("account", currentAccountReader.read());
-        return "/user/currency-exchange";
+        return gePathToPage();
     }
 
 
