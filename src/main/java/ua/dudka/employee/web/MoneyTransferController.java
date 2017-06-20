@@ -1,11 +1,12 @@
 package ua.dudka.employee.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.exception.AccountNotFoundException;
 import ua.dudka.employee.exception.MoneyTransferException;
@@ -23,8 +24,10 @@ import static ua.dudka.employee.web.MoneyTransferController.Links.TRANSFER_MONEY
  */
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class MoneyTransferController {
 
+    public static final String SUCCESS_TRANSFER_MESSAGE = "Successfully sent %s %s to account №%s";
     private final CurrentAccountReader currentAccountReader;
     private final MoneyTransfer moneyTransfer;
 
@@ -39,19 +42,39 @@ public class MoneyTransferController {
     }
 
     @PostMapping(TRANSFER_MONEY_URL)
-    public String transfer(@RequestParam String amount,
-                           @RequestParam Currency currency,
-                           @RequestParam int destinationAccountNumber,
+    public String transfer(@ModelAttribute MoneyTransferRequest request,
                            Model model
     ) {
         try {
-            MoneyTransferRequest request = new MoneyTransferRequest(new BigDecimal(amount), currency, destinationAccountNumber);
-            moneyTransfer.transfer(request);
+            logRequest(request);
+            processTransfer(request);
+            addSuccessTransferAttributeToModel(model, request);
         } catch (MoneyTransferException | AccountNotFoundException e) {
-            model.addAttribute("error", e.getMessage());
+            handleError(model, e);
         }
         model.addAttribute("account", currentAccountReader.read());
         return getPathToPage();
+    }
+
+    private void logRequest(MoneyTransferRequest request) {
+        log.info("processing {}", request);
+    }
+
+    private void processTransfer(MoneyTransferRequest request) {
+        moneyTransfer.transfer(request);
+    }
+
+    private void addSuccessTransferAttributeToModel(Model model, MoneyTransferRequest request) {
+        BigDecimal amount = request.getAmount();
+        Currency currency = request.getCurrency();
+        int accountNumber = request.getDestinationAccountNumber();
+        String formattedMessage = String.format(SUCCESS_TRANSFER_MESSAGE, amount, currency, accountNumber);
+        model.addAttribute("success", formattedMessage);
+    }
+
+    private void handleError(Model model, RuntimeException e) {
+        model.addAttribute("error", e.getMessage());
+        log.info(e.getMessage());
     }
 
     public static class Links {

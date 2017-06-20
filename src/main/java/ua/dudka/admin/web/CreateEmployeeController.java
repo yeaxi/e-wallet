@@ -54,6 +54,7 @@ public class CreateEmployeeController {
 
         try {
             employeeCreator.create(request);
+            model.addAttribute("success", "");
         } catch (EmployeeExistsException e) {
             model.addAttribute("error", e.getMessage());
         }

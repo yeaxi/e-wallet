@@ -1,7 +1,6 @@
 package ua.dudka.admin.web;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,9 +35,13 @@ public class EditEmployeeController {
 
     @GetMapping(EDIT_EMPLOYEE_PAGE_URL)
     public String getPage(@PathVariable("id") Integer employeeId, Model model) {
+        setDataToModel(employeeId, model);
+        return getPathToPage();
+    }
+
+    private void setDataToModel(Integer employeeId, Model model) {
         model.addAttribute("admin", adminReader.read());
         model.addAttribute("employee", employeeRepository.findOne(employeeId));
-        return getPathToPage();
     }
 
     @PostMapping(EDIT_EMPLOYEE_URL)
@@ -50,18 +53,26 @@ public class EditEmployeeController {
             Model model
     ) {
         try {
-            Salary newSalary = Salary.of(newSalaryAmount, newSalaryCurrency);
-            EditEmployeeRequest request = new EditEmployeeRequest(employeeId, newPosition, newSalary);
-
-            log.info("handling request  #{}", request);
-            employeeEditor.edit(request);
-            return "redirect:/admin/edit-employee/" + employeeId;
+            processRequest(employeeId, newPosition, newSalaryAmount, newSalaryCurrency, model);
         } catch (EmployeeNotFoundException e) {
-            model.addAttribute("admin", adminReader.read());
-            model.addAttribute("employee", employeeRepository.findOne(employeeId));
-            model.addAttribute("error", e.getMessage());
-            return getPathToPage();
+            handleError(model, e);
         }
+        setDataToModel(employeeId, model);
+        return getPathToPage();
+    }
+
+    private void processRequest(Integer employeeId, String newPosition, BigDecimal newSalaryAmount, Currency newSalaryCurrency, Model model) {
+        Salary newSalary = Salary.of(newSalaryAmount, newSalaryCurrency);
+        EditEmployeeRequest request = new EditEmployeeRequest(employeeId, newPosition, newSalary);
+
+        log.info("handling request  #{}", request);
+        employeeEditor.edit(request);
+
+        model.addAttribute("success", "");
+    }
+
+    private void handleError(Model model, EmployeeNotFoundException e) {
+        model.addAttribute("error", e.getMessage());
     }
 
     private String getPathToPage() {

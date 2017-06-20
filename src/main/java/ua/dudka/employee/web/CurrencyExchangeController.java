@@ -1,6 +1,7 @@
 package ua.dudka.employee.web;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,9 +9,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.exception.MoneyTransferException;
-import ua.dudka.employee.service.CurrentAccountReader;
 import ua.dudka.employee.service.CurrencyExchanger;
 import ua.dudka.employee.service.CurrencyExchanger.ExchangeType;
+import ua.dudka.employee.service.CurrentAccountReader;
 import ua.dudka.employee.web.dto.CurrencyExchangeRequest;
 
 import java.math.BigDecimal;
@@ -23,14 +24,16 @@ import static ua.dudka.employee.web.CurrencyExchangeController.Links.CURRENCY_EX
  */
 @Controller
 @RequiredArgsConstructor
+@Slf4j
 public class CurrencyExchangeController {
 
+    public static final String SUCCESS_MESSAGE_FORMAT = "successfully exchanged %s %s to %s";
     private final CurrentAccountReader currentAccountReader;
     private final CurrencyExchanger currencyExchanger;
 
     @GetMapping(CURRENCY_EXCHANGE_PAGE_URL)
     public String getPage(Model model) {
-        model.addAttribute("account", currentAccountReader.read());
+        addCurrentAccountToModel(model);
         return gePathToPage();
     }
 
@@ -40,20 +43,40 @@ public class CurrencyExchangeController {
 
 
     @PostMapping(CURRENCY_EXCHANGE_URL)
-    public String sellCurrency(@RequestParam BigDecimal amount,
-                               @RequestParam Currency sellCurrency,
-                               @RequestParam Currency buyCurrency,
-                               @RequestParam ExchangeType type,
-                               Model model
+    public String exchangeCurrency(@RequestParam BigDecimal amount,
+                                   @RequestParam Currency sellCurrency,
+                                   @RequestParam Currency buyCurrency,
+                                   @RequestParam ExchangeType type,
+                                   Model model
     ) {
 
         try {
-            currencyExchanger.exchange(new CurrencyExchangeRequest(amount, sellCurrency, buyCurrency, type));
+            processExchange(amount, sellCurrency, buyCurrency, type, model);
         } catch (MoneyTransferException e) {
-            model.addAttribute("error", e.getMessage());
+            handleError(model, e);
         }
-        model.addAttribute("account", currentAccountReader.read());
+        addCurrentAccountToModel(model);
         return gePathToPage();
+    }
+
+    private void processExchange(BigDecimal amount, Currency sellCurrency, Currency buyCurrency, ExchangeType type, Model model) {
+        CurrencyExchangeRequest request = new CurrencyExchangeRequest(amount, sellCurrency, buyCurrency, type);
+        log.info("processing {}", request);
+
+        currencyExchanger.exchange(request);
+        addSuccessToModel(model, request);
+    }
+
+    private void addSuccessToModel(Model model, CurrencyExchangeRequest request) {
+        model.addAttribute("success", String.format(SUCCESS_MESSAGE_FORMAT, request.getAmount(), request.getSellCurrency(), request.getBuyCurrency()));
+    }
+
+    private void addCurrentAccountToModel(Model model) {
+        model.addAttribute("account", currentAccountReader.read());
+    }
+
+    private void handleError(Model model, MoneyTransferException e) {
+        model.addAttribute("error", e.getMessage());
     }
 
 

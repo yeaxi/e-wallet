@@ -27,7 +27,6 @@ public class MoneyTransferImpl implements MoneyTransfer {
     private final AccountRepository accountRepository;
     private final CurrentAccountReader currentAccountReader;
 
-
     @Override
     public void transfer(MoneyTransferRequest request) {
         validate(request);
@@ -53,7 +52,7 @@ public class MoneyTransferImpl implements MoneyTransfer {
 
     private Account getDestinationAccount(int accountNumber) {
         return accountRepository.findByNumber(accountNumber)
-                .orElseThrow(() -> new AccountNotFoundException("Account with number:" + accountNumber + "not found!"));
+                .orElseThrow(() -> new AccountNotFoundException("Account with number: " + accountNumber + " not found!"));
     }
 
 }

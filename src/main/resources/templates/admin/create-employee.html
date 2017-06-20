@@ -48,17 +48,21 @@
         <!--main-->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
 
-            <h2 class="sub-header">Create Employee</h2>
+            <h2 class="sub-header">Employee adding</h2>
 
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">You can add new employee to the system</div>
+                <div class="panel-heading">All fields are required
+                    <h3 th:if="${success}"><span class="label label-success">Employee added successfully</span></h3>
+                    <h3 th:if="${error}"><span class="label label-danger" th:text="${error}"></span></h3>
+                </div>
+
 
                 <form action="#" th:action="@{/admin/create-employee/send}" method="post">
                     <div class="panel-body" th:class="${error}? 'panel-danger' ">
                         <!--panel body-->
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 col-lg-offset-3">
                                 <div class="input-group">
                                     <label for="name">Name:</label>
                                     <input type="text" name="name" id="name"
@@ -111,14 +115,17 @@
                                 </div><!-- /input-group -->
                             </div><!-- /.col-lg-6 -->
 
-                            <div class=" btn-submit-transfer btn-group btn-group-justified" role="group">
-                                <div class="btn-group" role="group">
-                                    <button type="submit" class="btn btn-primary">Create account</button>
-                                </div>
-                            </div>
+                            <div class="row">
+                                <div class="col-lg-4 col-lg-offset-3">
+                                    <div class=" btn-submit-transfer btn-group btn-group-justified" role="group">
+                                        <div class="btn-group" role="group">
+                                            <button type="submit" style="margin: 2%" class="btn btn-primary">
+                                                Add employee
+                                            </button>
+                                        </div>
+                                    </div>
 
-                            <div th:if="${error}">
-                                <h3><span class="label label-danger" th:text="${error}"></span></h3>
+                                </div>
                             </div>
                         </div><!-- /.row -->
                         <!--endpanel body-->

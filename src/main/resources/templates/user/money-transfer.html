@@ -40,7 +40,7 @@
         <!--end left-nav-menu-->
 
         <!--main-->
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-sm-offset-3 col-md-6 main">
             <!--<h1 class="page-header">Transfer</h1>-->
 
 
@@ -48,52 +48,71 @@
 
             <div class="panel panel-default">
                 <!-- Default panel contents -->
-                <div class="panel-heading">You can send money to another account</div>
+                <div class="panel-heading">You can send money to another account
+                    <h3 th:if="${error}"><span class="label label-danger" th:text="${error}"></span></h3>
+                    <h3 th:if="${success}">
+                        <span class="label label-success" th:text="${success}"></span>
+                    </h3>
+                </div>
 
-                <form action="#" th:action="@{/money-transfer/send}" method="post">
-                    <div class="panel-body" th:class="${error}? 'panel-danger' ">
-                        <!--panel body-->
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <label for="amount">Amount:</label>
-                                    <input type="number" name="amount" id="amount"
-                                           class="form-control" value="0"
-                                           aria-label="...">
 
-                                    <select name="currency">
-                                        <option
-                                                th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
-                                                th:value="${currency}"
-                                                th:text="${currency}">
-                                        </option>
-                                    </select>
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
+                <div class="row">
+                    <!--sell currency-->
+                    <div class="col-lg-10 col-lg-offset-2" style="margin-top:1%">
+                        <form action="#" th:action="@{/money-transfer/send}" method="post">
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <label for="amount-to-transfer">Amount to transfer:</label>
+                                    <div class="input-group">
+                                        <input id="amount-to-transfer" required="required" type="text" name="amount" class="form-control"
+                                               aria-label="...">
+                                        <div class="input-group-btn">
+                                            <button id="btn_amount-to-transfer" type="button"
+                                                    class="btn btn-default dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true"
+                                                    aria-expanded="false">
+                                                UAH
+                                                <span class="caret"></span>
+                                            </button>
+                                            <input id="currency" type="text" hidden="hidden"
+                                                   name="currency" value="UAH">
+                                            <ul class="dropdown-menu dropdown-menu-right">
+                                                <li th:id="${currency}"
+                                                    th:value="${currency}"
+                                                    th:each="currency : ${T(ua.dudka.employee.domain.Currency).values()}"
+                                                    onclick="selectCurrency(this.id)">
+                                                    <a href="#" th:text="${currency}">UAH</a>
+                                                </li>
+                                            </ul>
+                                        </div><!-- /btn-group -->
+                                    </div><!-- /input-group -->
+                                </div><!-- /.col-lg-5 -->
+                                <div class="col-lg-5">
+                                    <label for="destinationAccountNumber">Destination account number:</label>
+                                    <div class="input-group">
+                                        <input id="destinationAccountNumber" required="required" type="text"
+                                               name="destinationAccountNumber" class="form-control"
+                                               aria-label="...">
+                                    </div><!-- /input-group -->
+                                </div>
+                            </div><!-- /.row -->
 
-                            <div class="col-lg-6">
-                                <div class="input-group">
-                                    <label for="destination-number">Destination account number:</label>
-                                    <input type="number" value="0" name="destinationAccountNumber"
-                                           id="destination-number"
-                                           class="form-control" placeholder=""
-                                           aria-describedby="basic-addon1">
-                                </div><!-- /input-group -->
-                            </div><!-- /.col-lg-6 -->
-
-                            <div class=" btn-submit-transfer btn-group btn-group-justified" role="group">
-                                <div class="btn-group" role="group">
-                                    <button type="submit" class="btn btn-primary">Send</button>
+                            <div class="row" style="margin-top: 2%">
+                                <div class="col-lg-10">
+                                    <div class="input-group">
+                                        <div class=" btn-submit-transfer btn-group btn-group-justified"
+                                             role="group">
+                                            <div class="btn-group" role="group">
+                                                <button type="submit" class="btn btn-primary">Transfer money</button>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+                        </form>
+                    </div><!--/sell currency-->
 
-                            <div th:if="${error}">
-                                <h3><span class="label label-danger" th:text="${error}"></span></h3>
-                            </div>
-                        </div><!-- /.row -->
-                        <!--endpanel body-->
-                    </div>
-                </form>
+                </div><!--/row-->
             </div>
         </div>
         <!--end main-->
@@ -107,9 +126,11 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/js/vendor/jquery.min.js"><\/script>')</script>
 <script src="/js/bootstrap.min.js"></script>
-<!-- Just to make our placeholder images work. Don't actually copy the next line! -->
-<script src="/js/vendor/holder.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="/js/ie10-viewport-bug-workaround.js"></script>
+<script>
+    function selectCurrency(value) {
+        $('#btn_amount-to-transfer').text(value);
+        $('#currency').val(value);
+    }
+</script>
 </body>
 </html>

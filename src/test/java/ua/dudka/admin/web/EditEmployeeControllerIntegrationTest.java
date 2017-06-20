@@ -85,7 +85,7 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
                 .param("newSalaryAmount", request.getNewSalary().getAmount().toString())
                 .param("newSalaryCurrency", request.getNewSalary().getCurrency().toString())
                 .accept(MediaType.ALL))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().isOk());
 
         verify(employeeEditor).edit(eq(request));
     }

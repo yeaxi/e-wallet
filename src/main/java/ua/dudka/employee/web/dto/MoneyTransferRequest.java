@@ -1,6 +1,8 @@
 package ua.dudka.employee.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.dudka.employee.domain.Currency;
 
 import java.math.BigDecimal;
@@ -8,15 +10,12 @@ import java.math.BigDecimal;
 /**
  * @author Rostislav Dudka
  */
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true)
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class MoneyTransferRequest {
-    private final BigDecimal amount;
-    private final Currency currency;
-    private final int destinationAccountNumber;
+    private BigDecimal amount;
+    private Currency currency;
+    private int destinationAccountNumber;
 
 }
