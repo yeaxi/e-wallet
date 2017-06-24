@@ -5,11 +5,11 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.dudka.company.domain.Admin;
-import ua.dudka.company.repository.AdminRepository;
-import ua.dudka.company.service.AdminReader;
-import ua.dudka.employee.domain.Employee;
-import ua.dudka.employee.repository.EmployeeRepository;
+import ua.dudka.hrm.domain.model.company.Company;
+import ua.dudka.hrm.repository.CompanyRepository;
+import ua.dudka.hrm.application.CurrentCompanyReader;
+import ua.dudka.hrm.domain.model.employee.Employee;
+import ua.dudka.hrm.repository.EmployeeRepository;
 
 /**
  * @author Rostislav Dudka
@@ -24,8 +24,8 @@ public class MonthlySalaryPayer {
     private static final long MINUTE = SECOND * 60;
     private static final long FIVE_MINUTES_DELAY = 5 * MINUTE;
 
-    private final AdminReader adminReader;
-    private final AdminRepository adminRepository;
+    private final CurrentCompanyReader currentCompanyReader;
+    private final CompanyRepository companyRepository;
     private final EmployeeRepository employeeRepository;
 
 
@@ -36,11 +36,11 @@ public class MonthlySalaryPayer {
 
     @Transactional
     private void paySalary(Employee employee) {
-        Admin admin = adminReader.read();
+        Company company = currentCompanyReader.read();
 
-        admin.paySalary(employee);
+        company.paySalary(employee);
 
-        adminRepository.save(admin);
+        companyRepository.save(company);
         employeeRepository.save(employee);
 
     }

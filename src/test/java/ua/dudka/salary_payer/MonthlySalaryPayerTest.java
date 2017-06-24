@@ -2,13 +2,13 @@ package ua.dudka.salary_payer;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ua.dudka.company.domain.Admin;
-import ua.dudka.company.repository.AdminRepository;
-import ua.dudka.company.service.AdminReader;
-import ua.dudka.employee.domain.Currency;
-import ua.dudka.employee.domain.Employee;
-import ua.dudka.employee.domain.Salary;
-import ua.dudka.employee.repository.EmployeeRepository;
+import ua.dudka.hrm.domain.model.company.Company;
+import ua.dudka.hrm.repository.CompanyRepository;
+import ua.dudka.hrm.application.CurrentCompanyReader;
+import ua.dudka.account.domain.model.Currency;
+import ua.dudka.hrm.domain.model.employee.Employee;
+import ua.dudka.hrm.domain.model.employee.Salary;
+import ua.dudka.hrm.repository.EmployeeRepository;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -21,29 +21,29 @@ import static org.mockito.Mockito.*;
  */
 public class MonthlySalaryPayerTest {
 
-    private static AdminRepository adminRepository;
+    private static CompanyRepository companyRepository;
     private static EmployeeRepository employeeRepository;
-    private static AdminReader adminReader;
+    private static CurrentCompanyReader currentCompanyReader;
 
     private static MonthlySalaryPayer salaryPayer;
 
     private static List<Employee> employees;
-    private static Admin testAdmin;
+    private static Company testCompany;
 
     @BeforeClass
     public static void setUp() throws Exception {
-        adminReader = mock(AdminReader.class);
-        testAdmin = new Admin(BigDecimal.valueOf(1_000_000));
-        when(adminReader.read()).thenReturn(testAdmin);
+        currentCompanyReader = mock(CurrentCompanyReader.class);
+        testCompany = new Company(BigDecimal.valueOf(1_000_000));
+        when(currentCompanyReader.read()).thenReturn(testCompany);
 
-        adminRepository = mock(AdminRepository.class);
+        companyRepository = mock(CompanyRepository.class);
 
         employeeRepository = mock(EmployeeRepository.class);
 
         employees = setUpEmployees();
         when(employeeRepository.findAll()).thenReturn(employees);
 
-        salaryPayer = new MonthlySalaryPayer(adminReader, adminRepository, employeeRepository);
+        salaryPayer = new MonthlySalaryPayer(currentCompanyReader, companyRepository, employeeRepository);
     }
 
     private static List<Employee> setUpEmployees() {
@@ -65,8 +65,8 @@ public class MonthlySalaryPayerTest {
     public void payMonthlySalaryShouldPaySalaryToAllEmployees() throws Exception {
         salaryPayer.payMonthlySalary();
 
-        verify(adminReader, times(employees.size())).read();
-        verify(adminRepository, times(employees.size())).save(eq(testAdmin));
+        verify(currentCompanyReader, times(employees.size())).read();
+        verify(companyRepository, times(employees.size())).save(eq(testCompany));
         employees.forEach(e -> verify(employeeRepository).save(eq(e)));
     }
 }
