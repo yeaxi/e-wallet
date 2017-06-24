@@ -20,7 +20,7 @@ import ua.dudka.employee.repository.EmployeeRepository;
 import java.util.List;
 
 import static org.springframework.security.core.authority.AuthorityUtils.commaSeparatedStringToAuthorityList;
-import static ua.dudka.admin.web.CreateEmployeeController.Links.ADMIN_BASE_URL;
+import static ua.dudka.company.web.CreateEmployeeController.Links.ADMIN_BASE_URL;
 import static ua.dudka.config.AdminConfig.ADMIN_PASSWORD;
 import static ua.dudka.config.AdminConfig.ADMIN_USERNAME;
 

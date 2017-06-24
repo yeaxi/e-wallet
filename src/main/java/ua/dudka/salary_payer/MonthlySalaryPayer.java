@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.dudka.admin.domain.Admin;
-import ua.dudka.admin.repository.AdminRepository;
-import ua.dudka.admin.service.AdminReader;
+import ua.dudka.company.domain.Admin;
+import ua.dudka.company.repository.AdminRepository;
+import ua.dudka.company.service.AdminReader;
 import ua.dudka.employee.domain.Employee;
 import ua.dudka.employee.repository.EmployeeRepository;
 

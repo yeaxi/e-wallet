@@ -7,7 +7,7 @@ import ua.dudka.config.AdminConfig;
 
 import java.security.Principal;
 
-import static ua.dudka.admin.web.DisplayEmployeesController.Links.EMPLOYEES_PAGE_URL;
+import static ua.dudka.company.web.DisplayEmployeesController.Links.EMPLOYEES_PAGE_URL;
 import static ua.dudka.employee.web.DashboardController.Links.DASHBOARD_PAGE_URL;
 
 /**

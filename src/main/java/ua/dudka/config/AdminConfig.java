@@ -5,8 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import ua.dudka.admin.domain.Admin;
-import ua.dudka.admin.repository.AdminRepository;
+import ua.dudka.company.domain.Admin;
+import ua.dudka.company.repository.AdminRepository;
 
 import java.math.BigDecimal;
 

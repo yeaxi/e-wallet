@@ -2,9 +2,9 @@ package ua.dudka.salary_payer;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ua.dudka.admin.domain.Admin;
-import ua.dudka.admin.repository.AdminRepository;
-import ua.dudka.admin.service.AdminReader;
+import ua.dudka.company.domain.Admin;
+import ua.dudka.company.repository.AdminRepository;
+import ua.dudka.company.service.AdminReader;
 import ua.dudka.employee.domain.Currency;
 import ua.dudka.employee.domain.Employee;
 import ua.dudka.employee.domain.Salary;
