@@ -67,8 +67,8 @@ public class CreateEmployeeControllerIntegrationTest extends AbstractWebIntegrat
                 .param("email", request.getEmail())
                 .param("phoneNumber", request.getPhoneNumber())
                 .param("position", request.getPosition())
-                .param("salaryAmount", request.getSalary().getAmount().toString())
-                .param("salaryCurrency", request.getSalary().getCurrency().toString())
+                .param("salary.amount", request.getSalary().getAmount().toString())
+                .param("salary.currency", request.getSalary().getCurrency().toString())
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
 

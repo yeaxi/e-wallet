@@ -1,6 +1,9 @@
 package ua.dudka.hrm.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
@@ -9,11 +12,10 @@ import java.math.BigDecimal;
 /**
  * @author Rostislav Dudka
  */
-@AllArgsConstructor()
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
-@Getter
-@EqualsAndHashCode
-@ToString
+@Data
 public class CreateEmployeeRequest {
     private String name = "";
     private String surname = "";

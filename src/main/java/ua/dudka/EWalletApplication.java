@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.repository.EmployeeRepository;
+import ua.dudka.hrm.web.HRMController;
 
 import java.security.Principal;
 import java.util.List;
@@ -29,8 +30,8 @@ import static org.springframework.security.core.authority.AuthorityUtils.commaSe
 import static ua.dudka.account.web.DashboardController.Links.DASHBOARD_PAGE_URL;
 import static ua.dudka.hrm.application.config.AdminConfig.ADMIN_PASSWORD;
 import static ua.dudka.hrm.application.config.AdminConfig.ADMIN_USERNAME;
-import static ua.dudka.hrm.web.CreateEmployeeController.Links.ADMIN_BASE_URL;
 import static ua.dudka.hrm.web.DisplayEmployeesController.Links.EMPLOYEES_PAGE_URL;
+import static ua.dudka.hrm.web.HRMController.HRM_BASE_URL;
 
 /**
  * @author Rostislav Dudka
@@ -63,7 +64,7 @@ public class EWalletApplication {
                     .and()
                     .authorizeRequests()
                     .antMatchers("/").permitAll()
-                    .antMatchers(ADMIN_BASE_URL).hasRole("ADMIN")
+                    .antMatchers(HRM_BASE_URL).hasRole("ADMIN")
                     .anyRequest().authenticated()
                     .and()
                     .formLogin()

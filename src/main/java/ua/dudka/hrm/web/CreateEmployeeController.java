@@ -6,15 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ua.dudka.hrm.domain.service.exception.EmployeeExistsException;
-import ua.dudka.hrm.application.CurrentCompanyReader;
 import ua.dudka.hrm.domain.service.EmployeeCreator;
+import ua.dudka.hrm.domain.service.exception.EmployeeExistsException;
 import ua.dudka.hrm.web.dto.CreateEmployeeRequest;
-import ua.dudka.account.domain.model.Currency;
-import ua.dudka.hrm.domain.model.employee.Salary;
-
-import java.math.BigDecimal;
 
 import static ua.dudka.hrm.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_PAGE_URL;
 import static ua.dudka.hrm.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_URL;
@@ -25,41 +19,38 @@ import static ua.dudka.hrm.web.CreateEmployeeController.Links.CREATE_EMPLOYEE_UR
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class CreateEmployeeController {
+public class CreateEmployeeController extends HRMController {
 
-    private final CurrentCompanyReader currentCompanyReader;
     private final EmployeeCreator employeeCreator;
 
     @GetMapping(CREATE_EMPLOYEE_PAGE_URL)
-    public String getPage(Model model) {
-        model.addAttribute("company", currentCompanyReader.read());
+    public String getPage() {
         return getPathToPage();
     }
 
     @PostMapping(CREATE_EMPLOYEE_URL)
-    public String createEmployee(
-            @RequestParam("name") String name,
-            @RequestParam("surname") String surname,
-            @RequestParam("email") String email,
-            @RequestParam("phoneNumber") String phoneNumber,
-            @RequestParam("position") String position,
-            @RequestParam("salaryAmount") BigDecimal salaryAmount,
-            @RequestParam("salaryCurrency") Currency salaryCurrency,
-            Model model
-    ) {
-        CreateEmployeeRequest request = CreateEmployeeRequest.builder().name(name).surname(surname).email(email)
-                .phoneNumber(phoneNumber).position(position).salary(Salary.of(salaryAmount, salaryCurrency))
-                .build();
-        log.info("handling request: #{}", request);
-
+    public String createEmployee(CreateEmployeeRequest request, Model model) {
+        logRequest(request);
         try {
-            employeeCreator.create(request);
-            model.addAttribute("success", "");
+            processRequest(request, model);
         } catch (EmployeeExistsException e) {
-            model.addAttribute("error", e.getMessage());
+            logError(model, e);
         }
-        model.addAttribute("company", currentCompanyReader.read());
         return getPathToPage();
+    }
+
+    private void logRequest(CreateEmployeeRequest request) {
+        log.info("handling request: {}", request);
+    }
+
+    private void processRequest(CreateEmployeeRequest request, Model model) {
+        employeeCreator.create(request);
+        model.addAttribute("success", "");
+    }
+
+    private void logError(Model model, Exception e) {
+        log.info("handling EmployeeExistsException", e.getMessage());
+        model.addAttribute("error", e.getMessage());
     }
 
     private String getPathToPage() {
@@ -67,8 +58,7 @@ public class CreateEmployeeController {
     }
 
     public static class Links {
-        public static final String ADMIN_BASE_URL = "/hrm";
-        public static final String CREATE_EMPLOYEE_PAGE_URL = ADMIN_BASE_URL + "/create-employee";
+        public static final String CREATE_EMPLOYEE_PAGE_URL = HRM_BASE_URL + "/create-employee";
         public static final String CREATE_EMPLOYEE_URL = CREATE_EMPLOYEE_PAGE_URL + "/send";
     }
 }
