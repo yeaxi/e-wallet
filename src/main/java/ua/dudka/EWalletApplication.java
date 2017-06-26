@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.repository.EmployeeRepository;
-import ua.dudka.hrm.web.HRMController;
 
 import java.security.Principal;
 import java.util.List;

@@ -5,10 +5,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ua.dudka.hrm.domain.model.company.Company;
-import ua.dudka.hrm.repository.CompanyRepository;
 import ua.dudka.hrm.application.CurrentCompanyReader;
+import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.domain.model.employee.Employee;
+import ua.dudka.hrm.repository.CompanyRepository;
 import ua.dudka.hrm.repository.EmployeeRepository;
 
 /**
@@ -22,7 +22,6 @@ public class MonthlySalaryPayer {
 
     private static final long SECOND = 1000;
     private static final long MINUTE = SECOND * 60;
-    private static final long FIVE_MINUTES_DELAY = 5 * MINUTE;
 
     private final CurrentCompanyReader currentCompanyReader;
     private final CompanyRepository companyRepository;
