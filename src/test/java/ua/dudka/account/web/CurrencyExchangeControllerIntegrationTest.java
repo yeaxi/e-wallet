@@ -3,9 +3,11 @@ package ua.dudka.account.web;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import ua.dudka.abstract_test.AbstractSystemTest;
+import ua.dudka.abstract_test.AbstractWebIntegrationTest;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.application.CurrentAccountReader;
@@ -30,7 +32,8 @@ import static ua.dudka.account.web.CurrencyExchangeController.Links.*;
 /**
  * @author Rostislav Dudka
  */
-public class CurrencyExchangeControllerIntegrationTest extends AbstractSystemTest {
+@WebMvcTest(controllers = CurrencyExchangeController.class,secure = false)
+public class CurrencyExchangeControllerIntegrationTest extends AbstractWebIntegrationTest {
 
     @MockBean
     private CurrentAccountReader currentAccountReader;
@@ -69,7 +72,7 @@ public class CurrencyExchangeControllerIntegrationTest extends AbstractSystemTes
                 .param("amount", amount.toString())
                 .param("sellCurrency", sellCurrency.toString())
                 .param("buyCurrency", buyCurrency.toString())
-                .param("type", exchangeType.toString())
+                .param("exchangeType", exchangeType.toString())
 
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
@@ -89,7 +92,7 @@ public class CurrencyExchangeControllerIntegrationTest extends AbstractSystemTes
                 .param("amount", amount.toString())
                 .param("buyCurrency", buyCurrency.toString())
                 .param("sellCurrency", sellCurrency.toString())
-                .param("type", exchangeType.toString())
+                .param("exchangeType", exchangeType.toString())
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
 

@@ -6,12 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import ua.dudka.account.domain.model.Currency;
-import ua.dudka.account.domain.service.exception.MoneyTransferException;
 import ua.dudka.account.domain.service.CurrencyExchanger;
-import ua.dudka.account.domain.service.CurrencyExchanger.ExchangeType;
-import ua.dudka.account.application.CurrentAccountReader;
+import ua.dudka.account.domain.service.exception.MoneyTransferException;
 import ua.dudka.account.web.dto.CurrencyExchangeRequest;
 
 import java.math.BigDecimal;
@@ -25,60 +22,52 @@ import static ua.dudka.account.web.CurrencyExchangeController.Links.CURRENCY_EXC
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class CurrencyExchangeController {
+public class CurrencyExchangeController extends AccountController {
 
-    public static final String SUCCESS_MESSAGE_FORMAT = "successfully exchanged %s %s to %s";
-    private final CurrentAccountReader currentAccountReader;
+    private static final String SUCCESS_MESSAGE_FORMAT = "successfully exchanged %s %s to %s";
     private final CurrencyExchanger currencyExchanger;
 
     @GetMapping(CURRENCY_EXCHANGE_PAGE_URL)
-    public String getPage(Model model) {
-        addCurrentAccountToModel(model);
-        return gePathToPage();
+    public String getCurrencyExchangePage() {
+        return getPathToPage();
     }
-
-    private String gePathToPage() {
-        return "account/currency-exchange";
-    }
-
 
     @PostMapping(CURRENCY_EXCHANGE_URL)
-    public String exchangeCurrency(@RequestParam BigDecimal amount,
-                                   @RequestParam Currency sellCurrency,
-                                   @RequestParam Currency buyCurrency,
-                                   @RequestParam ExchangeType type,
-                                   Model model
-    ) {
-
+    public String exchangeCurrency(CurrencyExchangeRequest request, Model model) {
+        logRequest(request);
         try {
-            processExchange(amount, sellCurrency, buyCurrency, type, model);
+            processExchange(request, model);
         } catch (MoneyTransferException e) {
             handleError(model, e);
         }
-        addCurrentAccountToModel(model);
-        return gePathToPage();
+        return getPathToPage();
     }
 
-    private void processExchange(BigDecimal amount, Currency sellCurrency, Currency buyCurrency, ExchangeType type, Model model) {
-        CurrencyExchangeRequest request = new CurrencyExchangeRequest(amount, sellCurrency, buyCurrency, type);
+    private void logRequest(CurrencyExchangeRequest request) {
         log.info("processing {}", request);
+    }
 
+    private String getPathToPage() {
+        return "account/currency-exchange";
+    }
+
+    private void processExchange(CurrencyExchangeRequest request, Model model) {
         currencyExchanger.exchange(request);
-        addSuccessToModel(model, request);
+        addSuccessAttributeToModel(model, request);
     }
 
-    private void addSuccessToModel(Model model, CurrencyExchangeRequest request) {
-        model.addAttribute("success", String.format(SUCCESS_MESSAGE_FORMAT, request.getAmount(), request.getSellCurrency(), request.getBuyCurrency()));
-    }
-
-    private void addCurrentAccountToModel(Model model) {
-        model.addAttribute("account", currentAccountReader.read());
+    private void addSuccessAttributeToModel(Model model, CurrencyExchangeRequest request) {
+        BigDecimal amount = request.getAmount();
+        Currency sellCurrency = request.getSellCurrency();
+        Currency buyCurrency = request.getBuyCurrency();
+        String formattedMessage = String.format(SUCCESS_MESSAGE_FORMAT, amount, sellCurrency, buyCurrency);
+        model.addAttribute("success", formattedMessage);
     }
 
     private void handleError(Model model, MoneyTransferException e) {
+        log.info("handling error {}", e.getMessage());
         model.addAttribute("error", e.getMessage());
     }
-
 
     public static class Links {
         public static final String CURRENCY_EXCHANGE_PAGE_URL = "/currency-exchange";

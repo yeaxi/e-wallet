@@ -1,6 +1,8 @@
 package ua.dudka.account.web.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.service.CurrencyExchanger.ExchangeType;
 
@@ -9,14 +11,12 @@ import java.math.BigDecimal;
 /**
  * @author Rostislav Dudka
  */
-@RequiredArgsConstructor
-@NoArgsConstructor(force = true)
-@Getter
-@EqualsAndHashCode
-@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class CurrencyExchangeRequest {
-    private final BigDecimal amount;
-    private final Currency sellCurrency;
-    private final Currency buyCurrency;
-    private final ExchangeType exchangeType;
+    private BigDecimal amount;
+    private Currency sellCurrency;
+    private Currency buyCurrency;
+    private ExchangeType exchangeType;
 }
