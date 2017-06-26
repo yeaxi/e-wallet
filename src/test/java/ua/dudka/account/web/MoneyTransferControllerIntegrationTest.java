@@ -7,11 +7,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import ua.dudka.abstract_test.AbstractWebIntegrationTest;
+import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
-import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.service.MoneyTransfer;
-import ua.dudka.account.web.MoneyTransferController;
 import ua.dudka.account.web.dto.MoneyTransferRequest;
 
 import java.math.BigDecimal;
@@ -30,8 +29,7 @@ import static ua.dudka.account.web.MoneyTransferController.Links.TRANSFER_MONEY_
 /**
  * @author Rostislav Dudka
  */
-
-@WebMvcTest(MoneyTransferController.class)
+@WebMvcTest(controllers = MoneyTransferController.class, secure = false)
 public class MoneyTransferControllerIntegrationTest extends AbstractWebIntegrationTest {
 
     @MockBean

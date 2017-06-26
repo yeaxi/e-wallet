@@ -6,11 +6,10 @@ import org.junit.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import ua.dudka.abstract_test.AbstractSystemTest;
 import ua.dudka.abstract_test.AbstractWebIntegrationTest;
+import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
-import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.service.CurrencyExchanger;
 import ua.dudka.account.domain.service.CurrencyExchanger.ExchangeType;
 import ua.dudka.account.web.dto.CurrencyExchangeRequest;
@@ -27,7 +26,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ua.dudka.account.domain.service.CurrencyExchanger.ExchangeType.BUY;
 import static ua.dudka.account.domain.service.CurrencyExchanger.ExchangeType.SELL;
-import static ua.dudka.account.web.CurrencyExchangeController.Links.*;
+import static ua.dudka.account.web.CurrencyExchangeController.Links.CURRENCY_EXCHANGE_PAGE_URL;
+import static ua.dudka.account.web.CurrencyExchangeController.Links.CURRENCY_EXCHANGE_URL;
 
 /**
  * @author Rostislav Dudka

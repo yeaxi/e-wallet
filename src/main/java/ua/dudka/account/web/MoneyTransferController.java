@@ -5,13 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ua.dudka.account.domain.model.Currency;
+import ua.dudka.account.domain.service.MoneyTransfer;
 import ua.dudka.account.domain.service.exception.AccountNotFoundException;
 import ua.dudka.account.domain.service.exception.MoneyTransferException;
-import ua.dudka.account.application.CurrentAccountReader;
-import ua.dudka.account.domain.service.MoneyTransfer;
 import ua.dudka.account.web.dto.MoneyTransferRequest;
 
 import java.math.BigDecimal;
@@ -25,35 +23,30 @@ import static ua.dudka.account.web.MoneyTransferController.Links.TRANSFER_MONEY_
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-public class MoneyTransferController {
+public class MoneyTransferController extends AccountController {
 
-    public static final String SUCCESS_TRANSFER_MESSAGE = "Successfully sent %s %s to account №%s";
-    private final CurrentAccountReader currentAccountReader;
+    private static final String SUCCESS_TRANSFER_MESSAGE = "Successfully sent %s %s to account №%s";
     private final MoneyTransfer moneyTransfer;
 
     @GetMapping(MONEY_TRANSFER_PAGE_URL)
-    public String getPage(Model model) {
-        model.addAttribute("account", currentAccountReader.read());
+    public String getPage() {
         return getPathToPage();
     }
 
-    private String getPathToPage() {
-        return "account/money-transfer";
-    }
-
     @PostMapping(TRANSFER_MONEY_URL)
-    public String transfer(@ModelAttribute MoneyTransferRequest request,
-                           Model model
-    ) {
+    public String transfer(MoneyTransferRequest request, Model model) {
+        logRequest(request);
         try {
-            logRequest(request);
             processTransfer(request);
             addSuccessTransferAttributeToModel(model, request);
         } catch (MoneyTransferException | AccountNotFoundException e) {
             handleError(model, e);
         }
-        model.addAttribute("account", currentAccountReader.read());
         return getPathToPage();
+    }
+
+    private String getPathToPage() {
+        return "account/money-transfer";
     }
 
     private void logRequest(MoneyTransferRequest request) {
@@ -73,8 +66,8 @@ public class MoneyTransferController {
     }
 
     private void handleError(Model model, RuntimeException e) {
+        log.info("handling money transfer error {}", e.getMessage());
         model.addAttribute("error", e.getMessage());
-        log.info(e.getMessage());
     }
 
     public static class Links {
