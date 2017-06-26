@@ -17,7 +17,7 @@ public class Salary {
     private BigDecimal amount;
     private Currency currency;
 
-    Salary() {
+    public Salary() {
         this.amount = BigDecimal.ZERO;
         this.currency = Currency.UAH;
     }

@@ -80,8 +80,8 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
         mockMvc.perform(post(EDIT_EMPLOYEE_URL)
                 .param("employeeId", EMPLOYEE_ID + "")
                 .param("newPosition", request.getNewPosition())
-                .param("newSalaryAmount", request.getNewSalary().getAmount().toString())
-                .param("newSalaryCurrency", request.getNewSalary().getCurrency().toString())
+                .param("newSalary.amount", request.getNewSalary().getAmount().toString())
+                .param("newSalary.currency", request.getNewSalary().getCurrency().toString())
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
 

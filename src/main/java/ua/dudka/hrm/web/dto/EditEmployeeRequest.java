@@ -1,14 +1,18 @@
 package ua.dudka.hrm.web.dto;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
 /**
  * @author Rostislav Dudka
  */
-@Value
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class EditEmployeeRequest {
-    private final Integer employeeId;
-    private final String newPosition;
-    private final Salary newSalary;
+    private Integer employeeId;
+    private String newPosition;
+    private Salary newSalary = new Salary();
 }
