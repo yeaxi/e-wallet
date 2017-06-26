@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.service;
+package ua.dudka.account.application;
 
 import org.junit.Before;
 import org.junit.Test;

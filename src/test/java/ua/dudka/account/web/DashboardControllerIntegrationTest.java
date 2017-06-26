@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.web;
+package ua.dudka.account.web;
 
 import org.junit.After;
 import org.junit.Before;

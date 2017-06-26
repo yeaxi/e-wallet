@@ -1,4 +1,4 @@
-package ua.dudka.hrm.domain.service;
+package ua.dudka.hrm.application;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.*;
 /**
  * @author Rostislav Dudka
  */
-public class CompanyReaderTest {
+public class CurrenyCompanyReaderTest {
 
     private static final int ADMIN_ID = AdminConfig.getAdminId();
     private Company testCompany;

@@ -1,4 +1,4 @@
-package ua.dudka.hrm.domain;
+package ua.dudka.hrm.domain.model;
 
 import org.junit.Before;
 import org.junit.Test;

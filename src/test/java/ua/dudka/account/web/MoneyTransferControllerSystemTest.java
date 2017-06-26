@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.web;
+package ua.dudka.account.web;
 
 import org.junit.Test;
 import org.springframework.http.MediaType;
@@ -12,10 +12,10 @@ import static ua.dudka.account.web.DashboardController.Links.DASHBOARD_PAGE_URL;
 /**
  * @author Rostislav Dudka
  */
-public class DashboardControllerSystemTest extends AbstractSystemTest {
+public class MoneyTransferControllerSystemTest extends AbstractSystemTest {
 
     @Test
-    public void getDashboardPageShouldReturnOK() throws Exception {
+    public void getMoneyTransferPageShouldReturnOK() throws Exception {
         mockMvc.perform(get(DASHBOARD_PAGE_URL).accept(MediaType.TEXT_PLAIN))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(RESPONSE_HTML_CONTENT_TYPE));

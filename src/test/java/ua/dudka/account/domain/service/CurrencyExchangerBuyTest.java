@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.service;
+package ua.dudka.account.domain.service;
 
 import org.junit.Test;
 import ua.dudka.account.domain.model.Transaction;

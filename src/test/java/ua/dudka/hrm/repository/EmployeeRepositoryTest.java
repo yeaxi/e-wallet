@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.repository;
+package ua.dudka.hrm.repository;
 
 import org.junit.After;
 import org.junit.Before;

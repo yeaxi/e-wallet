@@ -1,4 +1,4 @@
-package ua.dudka.hrm.employee.service;
+package ua.dudka.account.domain.service;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -11,7 +11,6 @@ import ua.dudka.account.domain.service.exception.AccountNotFoundException;
 import ua.dudka.account.domain.service.exception.NotEnoughBalanceException;
 import ua.dudka.account.domain.service.exception.NotValidRequestException;
 import ua.dudka.account.repository.AccountRepository;
-import ua.dudka.account.domain.service.MoneyTransfer;
 import ua.dudka.account.domain.service.impl.MoneyTransferImpl;
 import ua.dudka.account.web.dto.MoneyTransferRequest;
 
