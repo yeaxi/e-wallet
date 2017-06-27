@@ -12,10 +12,10 @@
     <title>Create employee</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{css/bootstrap.min.css}"  href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}"  href="../../static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link th:href="@{css/hrm/hrm.css}" href="../../static/css/hrm/hrm.css" rel="stylesheet">
+    <link th:href="@{/css/hrm/hrm.css}" href="../../static/css/hrm/hrm.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -50,7 +50,7 @@
                 </div>
 
 
-                <form action="#" th:action="@{/company/create-employee/send}" method="post">
+                <form action="#" th:action="@{/hrm/create-employee/send}" method="post">
                     <div class="panel-body" th:class="${error}? 'panel-danger' ">
                         <!--panel body-->
                         <div class="row">
@@ -94,10 +94,10 @@
                                 </div>
                                 <div class="input-group">
                                     <label for="salaryAmount">Month sallary :</label>
-                                    <input type="text" name="salaryAmount" id="salaryAmount"
+                                    <input type="text" name="salary.amount" id="salaryAmount"
                                            class="form-control" value="0"
                                            aria-label="..." required="required">
-                                    <select name="salaryCurrency" required="required">
+                                    <select name="salary.currency" required="required">
                                         <option
                                                 th:each="currency : ${T(ua.dudka.account.domain.model.Currency).values()}"
                                                 th:value="${currency}"

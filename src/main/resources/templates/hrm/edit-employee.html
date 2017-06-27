@@ -12,10 +12,10 @@
     <title>Edit employee</title>
 
     <!-- Bootstrap core CSS -->
-    <link th:href="@{css/bootstrap.min.css}"  href="../../static/css/bootstrap.min.css" rel="stylesheet">
+    <link th:href="@{/css/bootstrap.min.css}"  href="../../static/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link th:href="@{css/hrm/hrm.css}" href="../../static/css/hrm/hrm.css" rel="stylesheet">
+    <link th:href="@{/css/hrm/hrm.css}" href="../../static/css/hrm/hrm.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -69,7 +69,7 @@
                         </div><!-- /.col-lg-6 -->
 
 
-                        <form action="#" th:action="@{/company/edit-employee/send}" method="post">
+                        <form action="#" th:action="@{/hrm/edit-employee/send}" method="post">
 
                             <input type="hidden" th:value="*{id}" name="employeeId">
                             <div class="col-lg-6">
@@ -88,10 +88,10 @@
                                     <div class="col-lg-6">
                                         <div class="input-group">
                                             <label for="newSalaryAmount">New month salary :</label>
-                                            <input type="number" min="1" max="500000"  name="newSalaryAmount" id="newSalaryAmount"
+                                            <input type="number" min="1" max="500000"  name="newSalary.amount" id="newSalaryAmount"
                                                    class="form-control" value=""
                                                    aria-label="...">
-                                            <select name="newSalaryCurrency">
+                                            <select name="newSalary.currency">
                                                 <option
                                                         th:each="currency : ${T(ua.dudka.account.domain.model.Currency).values()}"
                                                         th:value="${currency}"
