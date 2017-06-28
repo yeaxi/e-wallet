@@ -18,20 +18,11 @@
             <a class="navbar-brand" href="#">E-wallet</a>
 
             <!--wallets-->
-                <ul class="nav navbar-nav">
-                    <li><a href="#">
-                        <p th:text="${account.uahWallet.balance +' '+ account.uahWallet.currency}"></p>
-                    </a></li>
-                    <li><a href="#">
-                        <p th:text="${account.usdWallet.balance +' '+ account.usdWallet.currency}"></p>
-                    </a></li>
-                    <li><a href="#">
-                        <p th:text="${account.eurWallet.balance +' '+  account.eurWallet.currency}"></p>
-                    </a></li>
-                    <li><a href="#">
-                        <p th:text="${account.btcWallet.balance +' '+ account.btcWallet.currency}"></p>
-                    </a></li>
-                </ul>
+            <ul class="nav navbar-nav">
+                <li th:each="wallet: ${account.wallets}"><a href="#">
+                    <p th:text="${wallet.balance +' '+ wallet.currency}"></p>
+                </a></li>
+            </ul>
             <!--/wallets-->
         </div>
         <div id="navbar" class="navbar-collapse collapse">

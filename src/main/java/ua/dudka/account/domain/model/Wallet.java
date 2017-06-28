@@ -1,14 +1,17 @@
 package ua.dudka.account.domain.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import ua.dudka.account.domain.model.vo.Transactions;
 import ua.dudka.account.domain.service.exception.NotEnoughBalanceException;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Rostislav Dudka
@@ -17,27 +20,37 @@ import java.math.BigDecimal;
 @RequiredArgsConstructor
 @NoArgsConstructor(force = true)
 @Getter
+@EqualsAndHashCode(of = "id")
 public class Wallet {
 
     @Id
-    @GeneratedValue
-    private Integer id = 0;
+    private String id = UUID.randomUUID().toString();
 
     private BigDecimal balance = BigDecimal.ZERO;
 
     private final Currency currency;
+
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new ArrayList<>();
 
     public Wallet(BigDecimal balance, Currency currency) {
         this.balance = balance;
         this.currency = currency;
     }
 
+    public Transactions getTransactions() {
+        return new Transactions(this.transactions);
+    }
+
     public void applyTransaction(Transaction transaction) {
-        BigDecimal transactionAmount = transaction.getAmount();
-        if (transaction.getType() == Transaction.Type.WITHDRAWAL)
-            withdraw(transactionAmount);
+        BigDecimal amount = transaction.getAmount();
+        Transaction.Type type = transaction.getType();
+        if (type == Transaction.Type.WITHDRAWAL)
+            withdraw(amount);
         else
-            refill(transactionAmount);
+            refill(amount);
+
+        transactions.add(new Transaction(amount, type, currency, balance));
 
     }
 

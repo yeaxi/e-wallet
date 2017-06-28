@@ -3,15 +3,16 @@ package ua.dudka.account.domain.service;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.application.CurrentAccountReader;
+import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.Transaction;
+import ua.dudka.account.domain.model.Wallet;
 import ua.dudka.account.domain.service.exception.AccountNotFoundException;
 import ua.dudka.account.domain.service.exception.NotEnoughBalanceException;
 import ua.dudka.account.domain.service.exception.NotValidRequestException;
-import ua.dudka.account.repository.AccountRepository;
 import ua.dudka.account.domain.service.impl.MoneyTransferImpl;
+import ua.dudka.account.repository.AccountRepository;
 import ua.dudka.account.web.dto.MoneyTransferRequest;
 
 import java.math.BigDecimal;
@@ -59,24 +60,24 @@ public class MoneyTransferTest {
 
     @Test
     public void transferShouldReduceBalanceFromSourceAccount() throws Exception {
-        BigDecimal uahWalletAmountBefore = currentAccount.getUahWallet().getBalance();
+        BigDecimal uahWalletAmountBefore = currentAccount.getWallets().getByCurrency(UAH).getBalance();
         BigDecimal amountToTransfer = BigDecimal.TEN;
 
         moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, DESTINATION_ACCOUNT_NUMBER));
 
-        BigDecimal uahWalletAmountAfter = currentAccount.getUahWallet().getBalance();
+        BigDecimal uahWalletAmountAfter = currentAccount.getWallets().getByCurrency(UAH).getBalance();
         assertEquals(uahWalletAmountBefore, uahWalletAmountAfter.add(amountToTransfer));
     }
 
     @Test
     public void transferShouldIncreaseBalanceInDestinationAccount() throws Exception {
         Account destinationAccount = MoneyTransferTest.destinationAccount;
-        BigDecimal uahWalletAmountBefore = destinationAccount.getUahWallet().getBalance();
+        BigDecimal uahWalletAmountBefore = destinationAccount.getWallets().getByCurrency(UAH).getBalance();
         BigDecimal amountToTransfer = BigDecimal.TEN;
 
         moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, DESTINATION_ACCOUNT_NUMBER));
 
-        BigDecimal uahWalletAmountAfter = destinationAccount.getUahWallet().getBalance();
+        BigDecimal uahWalletAmountAfter = destinationAccount.getWallets().getByCurrency(UAH).getBalance();
         assertEquals(uahWalletAmountBefore, uahWalletAmountAfter.subtract(amountToTransfer));
     }
 
@@ -96,13 +97,14 @@ public class MoneyTransferTest {
         Currency currencyToTransfer = UAH;
         moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, currencyToTransfer, DESTINATION_ACCOUNT_NUMBER));
 
-        List<Transaction> transactions = account.getRecentTransactions();
+        Wallet uahWallet = account.getWallets().getByCurrency(currencyToTransfer);
+        List<Transaction> transactions = uahWallet.getTransactions().getRecent();
         assertFalse(transactions.isEmpty());
 
         Transaction transaction = transactions.get(0);
         assertEquals(amountToTransfer, transaction.getAmount());
         assertEquals(currencyToTransfer, transaction.getCurrency());
-        assertEquals(account.getUahWallet().getBalance(), transaction.getBalance());
+        assertEquals(uahWallet.getBalance(), transaction.getBalance());
     }
 
     @Test(expected = NotEnoughBalanceException.class)

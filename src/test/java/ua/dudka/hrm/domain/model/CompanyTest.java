@@ -2,12 +2,14 @@ package ua.dudka.hrm.domain.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.Transaction;
 import ua.dudka.account.domain.model.Transaction.Type;
 import ua.dudka.account.domain.model.Wallet;
+import ua.dudka.account.domain.model.vo.Transactions;
+import ua.dudka.account.domain.model.vo.Wallets;
 import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.domain.model.company.Debt;
-import ua.dudka.account.domain.model.Currency;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
@@ -40,7 +42,7 @@ public class CompanyTest {
         testCompany.paySalary(testEmployee);
 
         Salary salary = testEmployee.getSalary();
-        BigDecimal balanceAfter = testCompany.getWalletByCurrency(salary.getCurrency()).getBalance();
+        BigDecimal balanceAfter = testCompany.getWallets().getByCurrency(salary.getCurrency()).getBalance();
 
         BigDecimal amount = salary.getAmount();
 
@@ -51,7 +53,7 @@ public class CompanyTest {
     @Test
     public void paySalaryShouldIncreaseEmployeeAccountAmount() throws Exception {
         Salary salary = testEmployee.getSalary();
-        Wallet wallet = testEmployee.getAccount().getWalletByCurrency(salary.getCurrency());
+        Wallet wallet = testEmployee.getAccount().getWallets().getByCurrency(salary.getCurrency());
         BigDecimal employeeBalanceBefore = wallet.getBalance();
 
         testCompany.paySalary(testEmployee);
@@ -67,7 +69,10 @@ public class CompanyTest {
     public void paySalaryShouldAddRefillTransactionToEmployeeAccount() throws Exception {
         testCompany.paySalary(testEmployee);
 
-        Transaction refillTransaction = testEmployee.getAccount().getRecentTransactions().get(0);
+        Wallets wallets = testEmployee.getAccount().getWallets();
+        Wallet salaryWallet = wallets.getByCurrency(Currency.USD);
+        Transactions transactions = salaryWallet.getTransactions();
+        Transaction refillTransaction = transactions.get(0);
 
         assertEquals(testEmployee.getSalary().getAmount(), refillTransaction.getAmount());
         assertEquals(testEmployee.getSalary().getCurrency(), refillTransaction.getCurrency());

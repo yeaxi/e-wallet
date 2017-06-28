@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import ua.dudka.abstract_test.AbstractRepositoryTest;
 import ua.dudka.account.domain.model.Account;
+import ua.dudka.account.domain.model.Currency;
+import ua.dudka.account.domain.model.vo.Wallets;
 import ua.dudka.account.repository.AccountRepository;
 
 import static org.junit.Assert.*;
@@ -34,10 +36,12 @@ public class AccountRepositoryTest extends AbstractRepositoryTest {
         Account account = accountRepository.save(new Account());
         assertNotNull(account);
         assertNotNull(account.getNumber());
-        assertNotNull(account.getUahWallet());
-        assertNotNull(account.getUsdWallet());
-        assertNotNull(account.getEurWallet());
-        assertNotNull(account.getBtcWallet());
+
+        Wallets wallets = account.getWallets();
+        assertNotNull(wallets.getByCurrency(Currency.UAH));
+        assertNotNull(wallets.getByCurrency(Currency.USD));
+        assertNotNull(wallets.getByCurrency(Currency.EUR));
+        assertNotNull(wallets.getByCurrency(Currency.BTC));
     }
 
     @Test

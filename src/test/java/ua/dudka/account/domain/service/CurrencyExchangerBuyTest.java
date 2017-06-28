@@ -3,6 +3,7 @@ package ua.dudka.account.domain.service;
 import org.junit.Test;
 import ua.dudka.account.domain.model.Transaction;
 import ua.dudka.account.domain.model.Transaction.Type;
+import ua.dudka.account.domain.model.Wallet;
 import ua.dudka.account.domain.service.exception.NotEnoughBalanceException;
 import ua.dudka.account.domain.service.exception.NotValidRequestException;
 import ua.dudka.account.web.dto.CurrencyExchangeRequest;
@@ -25,22 +26,22 @@ public class CurrencyExchangerBuyTest extends AbstractCurrencyExchangeTest {
 
     @Test
     public void buyShouldIncreaseBoughtCurrencyAmount() throws Exception {
-        final BigDecimal usdWalletBalanceBefore = testAccount.getUsdWallet().getBalance();
+        final BigDecimal usdWalletBalanceBefore = testAccount.getWallets().getByCurrency(CURRENCY_TO_BUY).getBalance();
 
         currencyExchanger.exchange(CURRENCY_BUY_REQUEST);
 
-        BigDecimal usdWalletBalanceAfter = testAccount.getUsdWallet().getBalance();
+        BigDecimal usdWalletBalanceAfter = testAccount.getWallets().getByCurrency(CURRENCY_TO_BUY).getBalance();
 
         assertBalanceEquals(usdWalletBalanceBefore, usdWalletBalanceAfter.subtract(AMOUNT_TO_BUY));
     }
 
     @Test
     public void buyShouldReduceSoldCurrencyAmount() throws Exception {
-        final BigDecimal uahWalletBalanceBefore = testAccount.getUahWallet().getBalance();
+        final BigDecimal uahWalletBalanceBefore = testAccount.getWallets().getByCurrency(CURRENCY_TO_SELL).getBalance();
 
         currencyExchanger.exchange(CURRENCY_BUY_REQUEST);
 
-        BigDecimal uahWalletBalanceAfter = testAccount.getUahWallet().getBalance();
+        BigDecimal uahWalletBalanceAfter = testAccount.getWallets().getByCurrency(CURRENCY_TO_SELL).getBalance();
 
         BigDecimal soldAmount = AMOUNT_TO_BUY.divide(UAH_TO_USD_RATE, 2, BigDecimal.ROUND_UP);
         assertBalanceEquals(uahWalletBalanceBefore, uahWalletBalanceAfter.add(soldAmount));
@@ -55,14 +56,15 @@ public class CurrencyExchangerBuyTest extends AbstractCurrencyExchangeTest {
     public void buyShouldAddWithdrawTransaction() throws Exception {
         currencyExchanger.exchange(CURRENCY_BUY_REQUEST);
 
-        List<Transaction> transactions = testAccount.getRecentTransactions();
+        Wallet sellCurrencyWallet = testAccount.getWallets().getByCurrency(CURRENCY_TO_SELL);
+        List<Transaction> transactions = sellCurrencyWallet.getTransactions();
         assertFalse(transactions.isEmpty());
 
         BigDecimal soldAmount = AMOUNT_TO_BUY.divide(UAH_TO_USD_RATE, 2, BigDecimal.ROUND_UP);
         Transaction expectedTransaction = new Transaction(soldAmount, Type.WITHDRAWAL,
-                CURRENCY_TO_SELL, testAccount.getUahWallet().getBalance());
+                CURRENCY_TO_SELL, sellCurrencyWallet.getBalance());
 
-        Transaction actualTransaction = transactions.get(1);
+        Transaction actualTransaction = transactions.get(0);
 
         assertEquals(expectedTransaction, actualTransaction);
     }
@@ -71,10 +73,11 @@ public class CurrencyExchangerBuyTest extends AbstractCurrencyExchangeTest {
     public void buyShouldAddRefillTransaction() throws Exception {
         currencyExchanger.exchange(CURRENCY_BUY_REQUEST);
 
-        List<Transaction> transactions = testAccount.getRecentTransactions();
+        Wallet wallet = testAccount.getWallets().getByCurrency(CURRENCY_TO_BUY);
+        List<Transaction> transactions = wallet.getTransactions();
         assertFalse(transactions.isEmpty());
 
-        Transaction expectedTransaction = new Transaction(AMOUNT_TO_BUY, Type.REFILL, CURRENCY_TO_BUY, testAccount.getUsdWallet().getBalance());
+        Transaction expectedTransaction = new Transaction(AMOUNT_TO_BUY, Type.REFILL, CURRENCY_TO_BUY, wallet.getBalance());
         Transaction actualTransaction = transactions.get(0);
 
         assertEquals(expectedTransaction, actualTransaction);

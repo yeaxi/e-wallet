@@ -41,17 +41,8 @@
             <h1 class="page-header">Dashboard</h1>
 
             <div class="row placeholders">
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <p class="uah">[[${account.uahWallet.balance}]] [[${account.uahWallet.currency}]]</p>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <p class="usd">[[${account.usdWallet.balance}]] [[${account.usdWallet.currency}]]</p>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <p class="eur">[[${account.eurWallet.balance}]] [[${account.eurWallet.currency}]]</p>
-                </div>
-                <div class="col-xs-6 col-sm-3 placeholder">
-                    <p class="bit">[[${account.btcWallet.balance}]] [[${account.btcWallet.currency}]]</p>
+                <div th:each="wallet: ${account.wallets}" class="col-xs-6 col-sm-3 placeholder">
+                    <p th:text="${wallet.balance + ' ' + wallet.currency}">0 UAH</p>
                 </div>
             </div>
 
@@ -69,7 +60,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="trs : ${account.recentTransactions}">
+                    <tr th:each="trs : ${transactions}">
                         <td th:text="${trs.number}">0</td>
                         <td th:text="${trs.amount}">0</td>
                         <td th:text="${trs.type}">REFILL</td>

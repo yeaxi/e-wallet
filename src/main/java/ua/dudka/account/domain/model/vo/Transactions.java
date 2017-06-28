@@ -14,6 +14,7 @@ import static ua.dudka.account.domain.model.Transaction.Type.REFILL;
  */
 public class Transactions extends ForwardingList<Transaction> {
 
+    private static final int RECENT_TRANSACTIONS_AMOUNT = 10;
     private static final Comparator<Transaction> COMPARATOR = (o1, o2) -> {
         LocalDateTime firstDate = o1.getDate();
         LocalDateTime secondDate = o2.getDate();
@@ -32,5 +33,12 @@ public class Transactions extends ForwardingList<Transaction> {
     @Override
     protected List<Transaction> delegate() {
         return delegate;
+    }
+
+
+    public Transactions getRecent() {
+        if (delegate.size() <= RECENT_TRANSACTIONS_AMOUNT)
+            return this;
+        return new Transactions(delegate.subList(0, RECENT_TRANSACTIONS_AMOUNT));
     }
 }

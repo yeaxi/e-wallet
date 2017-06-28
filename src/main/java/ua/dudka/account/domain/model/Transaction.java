@@ -2,7 +2,8 @@ package ua.dudka.account.domain.model;
 
 import lombok.*;
 
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
 /**
  * @author Rostislav Dudka
  */
-@Embeddable
+@Entity
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @Getter
@@ -18,6 +19,7 @@ import java.util.UUID;
 @ToString
 public class Transaction {
 
+    @Id
     private final String number = UUID.randomUUID().toString();
     private final BigDecimal amount;
     private final LocalDateTime date = LocalDateTime.now();

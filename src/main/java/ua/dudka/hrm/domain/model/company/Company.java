@@ -5,16 +5,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.LazyCollection;
+import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.Transaction;
 import ua.dudka.account.domain.model.Wallet;
-import ua.dudka.account.domain.model.Currency;
+import ua.dudka.account.domain.model.vo.Wallets;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.FetchType.EAGER;
 import static org.hibernate.annotations.LazyCollectionOption.FALSE;
@@ -36,7 +39,7 @@ public class Company {
     private int id;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = EAGER)
-    private List<Wallet> wallets = new ArrayList<>();
+    private Set<Wallet> wallets = new HashSet<>();
 
     @LazyCollection(FALSE)
     @ElementCollection
@@ -50,6 +53,10 @@ public class Company {
         this.wallets.add(new Wallet(initialBalance, Currency.BTC));
     }
 
+    public Wallets getWallets() {
+        return new Wallets(this.wallets);
+    }
+
     public void paySalary(Employee employee) {
         Salary salary = employee.getSalary();
 
@@ -61,7 +68,7 @@ public class Company {
     }
 
     private boolean isEnoughBalance(Salary salary) {
-        Wallet wallet = getWalletByCurrency(salary.getCurrency());
+        Wallet wallet = getWallets().getByCurrency(salary.getCurrency());
 
         return wallet.getBalance().compareTo(salary.getAmount()) != -1;
     }
@@ -75,17 +82,10 @@ public class Company {
     private void pay(Employee employee) {
         Currency currency = employee.getSalary().getCurrency();
         BigDecimal salaryAmount = employee.getSalary().getAmount();
-        Wallet wallet = getWalletByCurrency(currency);
+        Wallet wallet = getWallets().getByCurrency(currency);
 
         wallet.applyTransaction(new Transaction(salaryAmount, WITHDRAWAL, currency));
         employee.getAccount().applyTransaction(new Transaction(salaryAmount, REFILL, currency));
-    }
-
-    public Wallet getWalletByCurrency(Currency currency) {
-        return wallets.stream()
-                .filter(w -> w.getCurrency().equals(currency))
-                .findFirst()
-                .orElse(new Wallet(BigDecimal.ZERO, currency));
     }
 
 }
