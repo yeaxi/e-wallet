@@ -5,15 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import ua.dudka.account.domain.model.Account;
-import ua.dudka.account.domain.model.Currency;
-import ua.dudka.account.domain.model.Transaction;
+import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.hrm.domain.model.employee.Employee;
+import ua.dudka.hrm.domain.model.employee.Salary;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-
-import static ua.dudka.account.domain.model.Transaction.Type.REFILL;
-import static ua.dudka.account.domain.model.Transaction.Type.WITHDRAWAL;
 
 /**
  * @author Rostislav Dudka
@@ -37,10 +34,10 @@ public class Company {
     }
 
     public void paySalary(Employee employee) {
-        Currency currency = employee.getSalary().getCurrency();
-        BigDecimal salaryAmount = employee.getSalary().getAmount();
+        Salary salary = employee.getSalary();
 
-        account.applyTransaction(new Transaction(salaryAmount, WITHDRAWAL, currency));
-        employee.getAccount().applyTransaction(new Transaction(salaryAmount, REFILL, currency));
+        MonetaryAmount amount = MonetaryAmount.of(salary.getAmount(), salary.getCurrency());
+        account.withdraw(amount);
+        employee.getAccount().refill(amount);
     }
 }

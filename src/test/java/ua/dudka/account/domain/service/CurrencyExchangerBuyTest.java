@@ -61,8 +61,7 @@ public class CurrencyExchangerBuyTest extends AbstractCurrencyExchangeTest {
         assertFalse(transactions.isEmpty());
 
         BigDecimal soldAmount = AMOUNT_TO_BUY.divide(UAH_TO_USD_RATE, 2, BigDecimal.ROUND_UP);
-        Transaction expectedTransaction = new Transaction(soldAmount, Type.WITHDRAWAL,
-                CURRENCY_TO_SELL, sellCurrencyWallet.getBalance());
+        Transaction expectedTransaction = new Transaction(soldAmount, Type.WITHDRAWAL, sellCurrencyWallet.getBalance());
 
         Transaction actualTransaction = transactions.get(0);
 
@@ -77,7 +76,7 @@ public class CurrencyExchangerBuyTest extends AbstractCurrencyExchangeTest {
         List<Transaction> transactions = wallet.getTransactions();
         assertFalse(transactions.isEmpty());
 
-        Transaction expectedTransaction = new Transaction(AMOUNT_TO_BUY, Type.REFILL, CURRENCY_TO_BUY, wallet.getBalance());
+        Transaction expectedTransaction = new Transaction(AMOUNT_TO_BUY, Type.REFILL, wallet.getBalance());
         Transaction actualTransaction = transactions.get(0);
 
         assertEquals(expectedTransaction, actualTransaction);

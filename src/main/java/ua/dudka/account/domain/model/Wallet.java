@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import ua.dudka.account.domain.model.Transaction.Type;
 import ua.dudka.account.domain.model.vo.Transactions;
 import ua.dudka.account.domain.service.exception.NotEnoughBalanceException;
 
@@ -42,30 +43,20 @@ public class Wallet {
         return new Transactions(this.transactions);
     }
 
-    public void applyTransaction(Transaction transaction) {
-        BigDecimal amount = transaction.getAmount();
-        Transaction.Type type = transaction.getType();
-        if (type == Transaction.Type.WITHDRAWAL)
-            withdraw(amount);
-        else
-            refill(amount);
-
-        transactions.add(new Transaction(amount, type, currency, balance));
-
-    }
-
-    private void withdraw(BigDecimal transactionAmount) {
+    void withdraw(BigDecimal transactionAmount) {
         if (isNotEnoughBalance(transactionAmount)) {
             throw new NotEnoughBalanceException(this.balance, transactionAmount);
         }
         this.balance = this.balance.subtract(transactionAmount);
+        transactions.add(new Transaction(transactionAmount, Type.WITHDRAWAL, balance));
     }
 
     private boolean isNotEnoughBalance(BigDecimal transactionAmount) {
         return this.balance.compareTo(transactionAmount) == -1;
     }
 
-    private void refill(BigDecimal transactionAmount) {
-        this.balance = this.balance.add(transactionAmount);
+    void refill(BigDecimal transactionAmount) {
+        balance = balance.add(transactionAmount);
+        transactions.add(new Transaction(transactionAmount, Type.REFILL, balance));
     }
 }

@@ -15,7 +15,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PACKAGE, force = true)
 @Getter
-@EqualsAndHashCode(exclude = {"number","date"})
+@EqualsAndHashCode(exclude = {"number", "date"})
 @ToString
 public class Transaction {
 
@@ -24,16 +24,8 @@ public class Transaction {
     private final BigDecimal amount;
     private final LocalDateTime date = LocalDateTime.now();
     private final Type type;
-    private final Currency currency;
     private final BigDecimal balance;
 
-
-    public Transaction(BigDecimal amount, Type type, Currency currency) {
-        this.amount = amount;
-        this.type = type;
-        this.currency = currency;
-        this.balance = BigDecimal.ZERO;
-    }
 
     public enum Type {
         WITHDRAWAL, REFILL

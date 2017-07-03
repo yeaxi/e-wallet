@@ -76,7 +76,6 @@ public class CompanyTest {
 
         Salary salary = testEmployee.getSalary();
         assertEquals(salary.getAmount(), transaction.getAmount());
-        assertEquals(salary.getCurrency(), transaction.getCurrency());
         assertEquals(Type.WITHDRAWAL, transaction.getType());
     }
 
@@ -90,7 +89,6 @@ public class CompanyTest {
         Transaction refillTransaction = transactions.get(0);
 
         assertEquals(testEmployee.getSalary().getAmount(), refillTransaction.getAmount());
-        assertEquals(testEmployee.getSalary().getCurrency(), refillTransaction.getCurrency());
         assertEquals(Type.REFILL, refillTransaction.getType());
     }
 }

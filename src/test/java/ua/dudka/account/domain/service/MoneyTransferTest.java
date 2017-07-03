@@ -103,7 +103,6 @@ public class MoneyTransferTest {
 
         Transaction transaction = transactions.get(0);
         assertEquals(amountToTransfer, transaction.getAmount());
-        assertEquals(currencyToTransfer, transaction.getCurrency());
         assertEquals(uahWallet.getBalance(), transaction.getBalance());
     }
 

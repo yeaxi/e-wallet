@@ -3,6 +3,7 @@ package ua.dudka.account.domain.model;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
+import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.account.domain.model.vo.Wallets;
 
 import javax.persistence.*;
@@ -47,8 +48,14 @@ public class Account {
     }
 
 
-    public void applyTransaction(Transaction transaction) {
-        Wallet wallet = getWallets().getByCurrency(transaction.getCurrency());
-        wallet.applyTransaction(transaction);
+    public void refill(MonetaryAmount monetaryAmount) {
+        Wallet wallet = getWallets().getByCurrency(monetaryAmount.getCurrency());
+        wallet.refill(monetaryAmount.getAmount());
+    }
+
+    public void withdraw(MonetaryAmount monetaryAmount) {
+        Wallet wallet = getWallets().getByCurrency(monetaryAmount.getCurrency());
+        wallet.withdraw(monetaryAmount.getAmount());
+
     }
 }

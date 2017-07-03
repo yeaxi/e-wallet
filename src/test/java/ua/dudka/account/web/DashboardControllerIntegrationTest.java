@@ -1,6 +1,5 @@
 package ua.dudka.account.web;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +11,7 @@ import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Transaction;
 import ua.dudka.account.domain.model.Wallet;
+import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.account.domain.model.vo.Wallets;
 
 import java.math.BigDecimal;
@@ -36,7 +36,6 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
             "                        <td>%s</td>\n" +
             "                        <td>%s</td>\n" +
             "                        <td>%s</td>\n" +
-            "                        <td>%s</td>\n" +
             "                        <td>%s</td>";
 
     @MockBean
@@ -47,7 +46,7 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
     @BeforeClass
     public static void setUp() throws Exception {
         testAccount = new Account();
-        testAccount.applyTransaction(new Transaction(BigDecimal.ONE, Transaction.Type.REFILL, UAH));
+        testAccount.refill(MonetaryAmount.of(BigDecimal.ONE, UAH));
 
     }
 
@@ -70,9 +69,9 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
                 .andExpect(content().contentType(RESPONSE_HTML_CONTENT_TYPE))
                 .andExpect(content().string(containsString("Account No. " + testAccount.getNumber())))
                 .andExpect(content().string(containsString(uahWallet.getBalance() + " " + uahWallet.getCurrency())))
-                .andExpect(content().string(containsString(usdWallet.getBalance()+ " " + usdWallet.getCurrency())))
-                .andExpect(content().string(containsString(eurWallet.getBalance()+ " " + eurWallet.getCurrency())))
-                .andExpect(content().string(containsString(btcWallet.getBalance()+ " " + btcWallet.getCurrency())));
+                .andExpect(content().string(containsString(usdWallet.getBalance() + " " + usdWallet.getCurrency())))
+                .andExpect(content().string(containsString(eurWallet.getBalance() + " " + eurWallet.getCurrency())))
+                .andExpect(content().string(containsString(btcWallet.getBalance() + " " + btcWallet.getCurrency())));
     }
 
 
@@ -89,7 +88,6 @@ public class DashboardControllerIntegrationTest extends AbstractWebIntegrationTe
                                 transaction.getNumber(),
                                 transaction.getAmount(),
                                 transaction.getType(),
-                                transaction.getCurrency(),
                                 transaction.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
                                 transaction.getBalance()))));
     }

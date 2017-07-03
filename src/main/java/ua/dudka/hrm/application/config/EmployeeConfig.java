@@ -4,12 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
+import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
 import ua.dudka.hrm.repository.EmployeeRepository;
-import ua.dudka.account.domain.model.Account;
-import ua.dudka.account.domain.model.Transaction;
 
 import java.math.BigDecimal;
 
@@ -43,7 +43,7 @@ public class EmployeeConfig implements CommandLineRunner {
 
         Account account = devEmployee.getAccount();
         for (int i = 1; i < 2; i++) {
-            account.applyTransaction(new Transaction(BigDecimal.valueOf(4.87 * i), Transaction.Type.REFILL, Currency.UAH));
+            account.refill(MonetaryAmount.of(BigDecimal.valueOf(4.87 * i), Currency.UAH));
             Thread.sleep(500);
         }
         employeeRepository.save(devEmployee);

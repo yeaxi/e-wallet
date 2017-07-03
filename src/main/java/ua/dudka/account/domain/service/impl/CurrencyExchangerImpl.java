@@ -3,20 +3,17 @@ package ua.dudka.account.domain.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
-import ua.dudka.account.domain.model.Transaction;
-import ua.dudka.account.domain.service.exception.NotValidRequestException;
-import ua.dudka.account.application.CurrentAccountReader;
-import ua.dudka.account.web.dto.CurrencyExchangeRequest;
-import ua.dudka.account.repository.AccountRepository;
+import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.account.domain.service.CurrencyExchanger;
 import ua.dudka.account.domain.service.CurrencyRates;
+import ua.dudka.account.domain.service.exception.NotValidRequestException;
+import ua.dudka.account.repository.AccountRepository;
+import ua.dudka.account.web.dto.CurrencyExchangeRequest;
 
 import java.math.BigDecimal;
-
-import static ua.dudka.account.domain.model.Transaction.Type.REFILL;
-import static ua.dudka.account.domain.model.Transaction.Type.WITHDRAWAL;
 
 /**
  * @author Rostislav Dudka
@@ -43,8 +40,8 @@ public class CurrencyExchangerImpl implements CurrencyExchanger {
         BigDecimal amountToSell = getAmountToSell(request.getExchangeType(), request.getAmount(), rate);
         BigDecimal amountToBuy = getAmountToBuy(request.getExchangeType(), request.getAmount(), rate);
 
-        currentAccount.applyTransaction(new Transaction(amountToSell, WITHDRAWAL, sellCurrency));
-        currentAccount.applyTransaction(new Transaction(amountToBuy, REFILL, buyCurrency));
+        currentAccount.withdraw(MonetaryAmount.of(amountToSell, sellCurrency));
+        currentAccount.refill(MonetaryAmount.of(amountToBuy, buyCurrency));
 
         accountRepository.save(currentAccount);
     }
