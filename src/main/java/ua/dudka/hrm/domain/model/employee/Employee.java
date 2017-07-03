@@ -29,8 +29,6 @@ public class Employee {
     private String phoneNumber;
     private String position;
     private final LocalDate enrollDate;
-
-    @Embedded
     private Salary salary;
 
     @OneToOne(cascade = CascadeType.ALL)
