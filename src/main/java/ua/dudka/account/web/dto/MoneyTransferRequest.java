@@ -16,6 +16,6 @@ import java.math.BigDecimal;
 public class MoneyTransferRequest {
     private BigDecimal amount;
     private Currency currency;
+    private int sourceAccountNumber;
     private int destinationAccountNumber;
-
 }

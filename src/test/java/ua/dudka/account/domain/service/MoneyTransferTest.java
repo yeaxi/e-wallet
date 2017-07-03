@@ -3,7 +3,6 @@ package ua.dudka.account.domain.service;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import ua.dudka.account.application.CurrentAccountReader;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.Transaction;
@@ -31,41 +30,41 @@ import static ua.dudka.account.domain.model.Currency.UAH;
  */
 public class MoneyTransferTest {
 
+    private static final int SOURCE_ACCOUNT_NUMBER = 15532;
     private static final int DESTINATION_ACCOUNT_NUMBER = 20515;
     private static final BigDecimal DEFAULT_BALANCE = BigDecimal.valueOf(100);
-    private static final int NOT_FOUND_DESTINATION_ACCOUNT_NUMBER = 404;
+    private static final int NOT_FOUND_ACCOUNT_NUMBER = 404;
 
-    private static Account currentAccount;
+    private static Account sourceAccount;
     private static Account destinationAccount;
 
-    private static CurrentAccountReader currentAccountReader;
     private static MoneyTransfer moneyTransfer;
     private static AccountRepository accountRepository;
 
     @BeforeClass
     public static void setUpMocks() throws Exception {
-        currentAccountReader = mock(CurrentAccountReader.class);
         accountRepository = mock(AccountRepository.class);
-        moneyTransfer = new MoneyTransferImpl(accountRepository, currentAccountReader);
+
+        moneyTransfer = new MoneyTransferImpl(accountRepository);
     }
 
     @Before
     public void setUpAccounts() throws Exception {
-        currentAccount = new Account(DEFAULT_BALANCE);
+        sourceAccount = new Account(DEFAULT_BALANCE);
         destinationAccount = new Account(DEFAULT_BALANCE);
-        when(currentAccountReader.read()).thenReturn(currentAccount);
+        when(accountRepository.findByNumber(eq(SOURCE_ACCOUNT_NUMBER))).thenReturn(Optional.of(sourceAccount));
         when(accountRepository.findByNumber(eq(DESTINATION_ACCOUNT_NUMBER))).thenReturn(Optional.of(destinationAccount));
-        when(accountRepository.findByNumber(eq(NOT_FOUND_DESTINATION_ACCOUNT_NUMBER))).thenReturn(Optional.empty());
+        when(accountRepository.findByNumber(eq(NOT_FOUND_ACCOUNT_NUMBER))).thenReturn(Optional.empty());
     }
 
     @Test
     public void transferShouldReduceBalanceFromSourceAccount() throws Exception {
-        BigDecimal uahWalletAmountBefore = currentAccount.getWallets().getByCurrency(UAH).getBalance();
+        BigDecimal uahWalletAmountBefore = sourceAccount.getWallets().getByCurrency(UAH).getBalance();
         BigDecimal amountToTransfer = BigDecimal.TEN;
 
-        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
 
-        BigDecimal uahWalletAmountAfter = currentAccount.getWallets().getByCurrency(UAH).getBalance();
+        BigDecimal uahWalletAmountAfter = sourceAccount.getWallets().getByCurrency(UAH).getBalance();
         assertEquals(uahWalletAmountBefore, uahWalletAmountAfter.add(amountToTransfer));
     }
 
@@ -75,7 +74,7 @@ public class MoneyTransferTest {
         BigDecimal uahWalletAmountBefore = destinationAccount.getWallets().getByCurrency(UAH).getBalance();
         BigDecimal amountToTransfer = BigDecimal.TEN;
 
-        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
 
         BigDecimal uahWalletAmountAfter = destinationAccount.getWallets().getByCurrency(UAH).getBalance();
         assertEquals(uahWalletAmountBefore, uahWalletAmountAfter.subtract(amountToTransfer));
@@ -84,7 +83,7 @@ public class MoneyTransferTest {
 
     @Test
     public void transferShouldAddTransactionInSourceAccount() throws Exception {
-        transferShouldAddTransactionInAccount(currentAccount);
+        transferShouldAddTransactionInAccount(sourceAccount);
     }
 
     @Test
@@ -95,7 +94,7 @@ public class MoneyTransferTest {
     private void transferShouldAddTransactionInAccount(Account account) {
         BigDecimal amountToTransfer = BigDecimal.TEN;
         Currency currencyToTransfer = UAH;
-        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, currencyToTransfer, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, currencyToTransfer, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
 
         Wallet uahWallet = account.getWallets().getByCurrency(currencyToTransfer);
         List<Transaction> transactions = uahWallet.getTransactions().getRecent();
@@ -110,27 +109,27 @@ public class MoneyTransferTest {
     public void ifNotEnoughBalanceInSourceAccountTransferShouldThrowNotEnoughBalanceException() throws Exception {
         BigDecimal amountToTransfer = DEFAULT_BALANCE.add(BigDecimal.TEN);
 
-        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(amountToTransfer, UAH, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
     }
 
     @Test(expected = AccountNotFoundException.class)
     public void ifDestinationAccountNumberIsInvalidTransferShouldThrowAccountNotFoundException() throws Exception {
-        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, UAH, NOT_FOUND_DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, UAH, SOURCE_ACCOUNT_NUMBER, NOT_FOUND_ACCOUNT_NUMBER));
     }
 
     @Test(expected = NotValidRequestException.class)
     public void ifMoneyTransferRequestHasEmptyAmountFiledTransferShouldThrowNotValidRequestException() throws Exception {
-        moneyTransfer.transfer(new MoneyTransferRequest(null, UAH, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(null, UAH, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
     }
 
     @Test(expected = NotValidRequestException.class)
     public void ifMoneyTransferRequestHasEmptyCurrencyFiledTransferShouldThrowNotValidRequestException() throws Exception {
-        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, null, DESTINATION_ACCOUNT_NUMBER));
+        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, null, SOURCE_ACCOUNT_NUMBER, DESTINATION_ACCOUNT_NUMBER));
     }
 
     @Test(expected = NotValidRequestException.class)
     public void ifMoneyTransferRequestHasEmptyDestinationFiledTransferShouldThrowNotValidRequestException() throws Exception {
-        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, UAH, 0));
+        moneyTransfer.transfer(new MoneyTransferRequest(BigDecimal.TEN, UAH, SOURCE_ACCOUNT_NUMBER, 0));
 
     }
 }

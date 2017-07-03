@@ -71,6 +71,7 @@ public class MoneyTransferControllerIntegrationTest extends AbstractWebIntegrati
                 .accept(MediaType.ALL))
                 .andExpect(status().isOk());
 
-        verify(moneyTransfer).transfer(eq(new MoneyTransferRequest(new BigDecimal(amount), currency, destinationAccountNumber)));
+        verify(moneyTransfer).transfer(eq(new MoneyTransferRequest(new BigDecimal(amount), currency,
+                testAccount.getNumber(), destinationAccountNumber)));
     }
 }

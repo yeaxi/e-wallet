@@ -11,6 +11,8 @@ import ua.dudka.hrm.domain.model.employee.Salary;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Rostislav Dudka
@@ -29,6 +31,9 @@ public class Company {
     @OneToOne(cascade = CascadeType.ALL)
     private Account account = new Account();
 
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Employee> employees = new HashSet<>();
+
     public Company(BigDecimal initialBalance) {
         this.account = new Account(initialBalance);
     }
@@ -39,5 +44,9 @@ public class Company {
         MonetaryAmount amount = MonetaryAmount.of(salary.getAmount(), salary.getCurrency());
         account.withdraw(amount);
         employee.getAccount().refill(amount);
+    }
+
+    public void addEmployee(Employee employee) {
+        this.employees.add(employee);
     }
 }

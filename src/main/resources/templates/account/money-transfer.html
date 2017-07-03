@@ -58,6 +58,7 @@
                         <form action="#" th:action="@{/money-transfer/send}" method="post">
                             <div class="row">
                                 <div class="col-lg-5">
+                                    <input name="sourceAccountNumber" type="hidden" th:value="${account.number}">
                                     <label for="amount-to-transfer">Amount to transfer:</label>
                                     <div class="input-group">
                                         <input id="amount-to-transfer" required="required" type="text" name="amount" class="form-control"
