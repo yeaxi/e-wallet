@@ -2,6 +2,7 @@ package ua.dudka.hrm.domain.model;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.Transaction;
 import ua.dudka.account.domain.model.Transaction.Type;
@@ -9,15 +10,12 @@ import ua.dudka.account.domain.model.Wallet;
 import ua.dudka.account.domain.model.vo.Transactions;
 import ua.dudka.account.domain.model.vo.Wallets;
 import ua.dudka.hrm.domain.model.company.Company;
-import ua.dudka.hrm.domain.model.company.Debt;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * @author Rostislav Dudka
@@ -38,11 +36,13 @@ public class CompanyTest {
     }
 
     @Test
-    public void paySalaryShouldWithdrawSalaryAmountFromAdminAccount() throws Exception {
+    public void paySalaryShouldWithdrawSalaryAmountFromCompanyAccount() throws Exception {
         testCompany.paySalary(testEmployee);
 
         Salary salary = testEmployee.getSalary();
-        BigDecimal balanceAfter = testCompany.getWallets().getByCurrency(salary.getCurrency()).getBalance();
+        Account testCompanyAccount = testCompany.getAccount();
+        Wallet wallet = testCompanyAccount.getWallets().getByCurrency(salary.getCurrency());
+        BigDecimal balanceAfter = wallet.getBalance();
 
         BigDecimal amount = salary.getAmount();
 
@@ -51,7 +51,7 @@ public class CompanyTest {
     }
 
     @Test
-    public void paySalaryShouldIncreaseEmployeeAccountAmount() throws Exception {
+    public void paySalaryShouldIncreaseEmployeeAccountBalance() throws Exception {
         Salary salary = testEmployee.getSalary();
         Wallet wallet = testEmployee.getAccount().getWallets().getByCurrency(salary.getCurrency());
         BigDecimal employeeBalanceBefore = wallet.getBalance();
@@ -66,6 +66,21 @@ public class CompanyTest {
 
 
     @Test
+    public void paySalaryShouldAddWithdrawTransactionToCompanyAccount() throws Exception {
+        testCompany.paySalary(testEmployee);
+
+        Wallets wallets = testCompany.getAccount().getWallets();
+        Wallet salaryWallet = wallets.getByCurrency(Currency.USD);
+        Transactions transactions = salaryWallet.getTransactions();
+        Transaction transaction = transactions.get(0);
+
+        Salary salary = testEmployee.getSalary();
+        assertEquals(salary.getAmount(), transaction.getAmount());
+        assertEquals(salary.getCurrency(), transaction.getCurrency());
+        assertEquals(Type.WITHDRAWAL, transaction.getType());
+    }
+
+    @Test
     public void paySalaryShouldAddRefillTransactionToEmployeeAccount() throws Exception {
         testCompany.paySalary(testEmployee);
 
@@ -77,21 +92,5 @@ public class CompanyTest {
         assertEquals(testEmployee.getSalary().getAmount(), refillTransaction.getAmount());
         assertEquals(testEmployee.getSalary().getCurrency(), refillTransaction.getCurrency());
         assertEquals(Type.REFILL, refillTransaction.getType());
-    }
-
-    @Test
-    public void paySalaryShouldAddDebtToAdminIfNotEnoughAmountToWithdraw() throws Exception {
-        testEmployee.changeSalary(Salary.of(ADMIN_BALANCE.add(BigDecimal.TEN), Currency.USD));
-
-
-        testCompany.paySalary(testEmployee);
-
-        List<Debt> debts = testCompany.getDebts();
-
-        assertFalse(debts.isEmpty());
-
-        Debt debt = debts.get(0);
-        assertEquals(debt.getEmployeeId(), testEmployee.getId());
-        assertEquals(debt.getSalary(), testEmployee.getSalary());
     }
 }

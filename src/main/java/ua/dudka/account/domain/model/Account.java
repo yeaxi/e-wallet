@@ -19,8 +19,6 @@ import java.util.Set;
 @ToString
 public class Account {
 
-    private static final int RECENT_TRANSACTIONS_AMOUNT = 10;
-
     @Id
     @Column(name = "id")
     @GeneratedValue

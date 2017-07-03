@@ -42,7 +42,7 @@
             <h1 class="page-header">Dashboard</h1>
 
             <div class="row placeholders">
-                <div th:each="wallet : ${company.wallets}" class="col-xs-6 col-sm-3 placeholder">
+                <div th:each="wallet : ${company.account.wallets}" class="col-xs-6 col-sm-3 placeholder">
                     <p class="bit">[[${wallet.balance}]] [[${wallet.currency}]]</p>
                 </div>
             </div>
