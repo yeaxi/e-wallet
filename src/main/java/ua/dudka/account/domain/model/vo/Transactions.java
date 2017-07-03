@@ -23,7 +23,7 @@ public class Transactions extends ForwardingList<Transaction> {
         return result != 0 ? result : o2.getType() == REFILL ? 1 : -1;
     };
 
-    private List<Transaction> delegate;
+    private final List<Transaction> delegate;
 
     public Transactions(List<Transaction> transactions) {
         this.delegate = transactions;

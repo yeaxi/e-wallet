@@ -7,5 +7,5 @@ public enum Currency {
     UAH,
     USD,
     EUR,
-    BTC;
+    BTC
 }
