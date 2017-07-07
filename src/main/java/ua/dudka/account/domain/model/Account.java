@@ -22,8 +22,9 @@ public class Account {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue
     private Integer number = 0;
+
+    private String email;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Wallet> wallets = new HashSet<>();
@@ -33,6 +34,17 @@ public class Account {
     }
 
     public Account(BigDecimal initialBalance) {
+        initWallets(initialBalance);
+    }
+
+    public Account(int userId, String email) {
+        this.number = userId;
+        this.email = email;
+    }
+
+    public Account(Integer number, String email, BigDecimal initialBalance) {
+        this.number = number;
+        this.email = email;
         initWallets(initialBalance);
     }
 

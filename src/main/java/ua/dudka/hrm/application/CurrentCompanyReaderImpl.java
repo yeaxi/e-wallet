@@ -2,7 +2,7 @@ package ua.dudka.hrm.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.dudka.hrm.application.config.AdminConfig;
+import ua.dudka.hrm.application.config.CompanyConfig;
 import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.repository.CompanyRepository;
 
@@ -16,6 +16,6 @@ public class CurrentCompanyReaderImpl implements CurrentCompanyReader {
 
     @Override
     public Company read() {
-        return companyRepository.findOne(AdminConfig.getAdminId());
+        return companyRepository.findOne(CompanyConfig.getAdminId());
     }
 }

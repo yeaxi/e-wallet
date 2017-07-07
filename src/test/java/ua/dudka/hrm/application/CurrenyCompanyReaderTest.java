@@ -2,11 +2,9 @@ package ua.dudka.hrm.application;
 
 import org.junit.Before;
 import org.junit.Test;
-import ua.dudka.hrm.application.CurrentCompanyReader;
 import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.repository.CompanyRepository;
-import ua.dudka.hrm.application.CurrentCompanyReaderImpl;
-import ua.dudka.hrm.application.config.AdminConfig;
+import ua.dudka.hrm.application.config.CompanyConfig;
 
 import java.math.BigDecimal;
 
@@ -19,7 +17,7 @@ import static org.mockito.Mockito.*;
  */
 public class CurrenyCompanyReaderTest {
 
-    private static final int ADMIN_ID = AdminConfig.getAdminId();
+    private static final int ADMIN_ID = CompanyConfig.getAdminId();
     private Company testCompany;
 
     private CompanyRepository companyRepository;
@@ -29,7 +27,7 @@ public class CurrenyCompanyReaderTest {
     public void setUp() throws Exception {
         companyRepository = mock(CompanyRepository.class);
 
-        testCompany = new Company(BigDecimal.valueOf(1000));
+        testCompany = new Company();
 
         when(companyRepository.findOne(eq(ADMIN_ID))).thenReturn(testCompany);
 

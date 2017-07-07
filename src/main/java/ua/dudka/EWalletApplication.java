@@ -27,8 +27,8 @@ import java.util.List;
 
 import static org.springframework.security.core.authority.AuthorityUtils.commaSeparatedStringToAuthorityList;
 import static ua.dudka.account.web.DashboardController.Links.DASHBOARD_PAGE_URL;
-import static ua.dudka.hrm.application.config.AdminConfig.ADMIN_PASSWORD;
-import static ua.dudka.hrm.application.config.AdminConfig.ADMIN_USERNAME;
+import static ua.dudka.hrm.application.config.CompanyConfig.ADMIN_PASSWORD;
+import static ua.dudka.hrm.application.config.CompanyConfig.ADMIN_USERNAME;
 import static ua.dudka.hrm.web.DisplayEmployeesController.Links.EMPLOYEES_PAGE_URL;
 import static ua.dudka.hrm.web.HRMController.HRM_BASE_URL;
 

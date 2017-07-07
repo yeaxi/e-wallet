@@ -19,11 +19,11 @@
 
             <!--wallets-->
             <ul class="nav navbar-nav">
-                    <li th:each="wallet : ${company.account.wallets}">
-                        <a href="#">
-                            <p th:text="${wallet.balance +' '+ wallet.currency}"></p>
-                        </a>
-                        </li>
+                <li th:each="wallet : ${account.wallets}">
+                    <a href="#">
+                        <p th:text="${wallet.balance +' '+ wallet.currency}"></p>
+                    </a>
+                </li>
             </ul>
             <!--end wallets-->
         </div>

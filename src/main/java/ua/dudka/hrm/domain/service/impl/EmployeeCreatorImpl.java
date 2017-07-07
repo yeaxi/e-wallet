@@ -1,11 +1,15 @@
 package ua.dudka.hrm.domain.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
+import ua.dudka.account.application.event.dto.UserCreatedEvent;
+import ua.dudka.hrm.application.CurrentCompanyReader;
+import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.domain.model.employee.Employee;
+import ua.dudka.hrm.domain.service.EmployeeCreator;
 import ua.dudka.hrm.domain.service.exception.EmployeeExistsException;
 import ua.dudka.hrm.repository.EmployeeRepository;
-import ua.dudka.hrm.domain.service.EmployeeCreator;
 import ua.dudka.hrm.web.dto.CreateEmployeeRequest;
 
 /**
@@ -16,14 +20,18 @@ import ua.dudka.hrm.web.dto.CreateEmployeeRequest;
 public class EmployeeCreatorImpl implements EmployeeCreator {
 
     private final EmployeeRepository employeeRepository;
+    private final CurrentCompanyReader currentCompanyReader;
+    private final ApplicationEventPublisher publisher;
 
     @Override
     public void create(CreateEmployeeRequest request) {
         validate(request);
 
-        Employee employee = buildEmployee(request);
+        Company company = currentCompanyReader.read();
+        Employee employee = buildEmployee(request, company);
 
-        employeeRepository.save(employee);
+        employee = employeeRepository.save(employee);
+        publisher.publishEvent(new UserCreatedEvent(employee.getId(), employee.getEmail()));
     }
 
     private void validate(CreateEmployeeRequest request) {
@@ -35,7 +43,7 @@ public class EmployeeCreatorImpl implements EmployeeCreator {
         }
     }
 
-    private Employee buildEmployee(CreateEmployeeRequest request) {
+    private Employee buildEmployee(CreateEmployeeRequest request, Company company) {
         return Employee
                 .builder()
                 .name(request.getName())
@@ -44,6 +52,7 @@ public class EmployeeCreatorImpl implements EmployeeCreator {
                 .phoneNumber(request.getPhoneNumber())
                 .position(request.getPosition())
                 .salary(request.getSalary())
+                .company(company)
                 .build();
     }
 }

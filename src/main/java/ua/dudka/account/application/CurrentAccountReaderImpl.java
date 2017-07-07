@@ -1,11 +1,13 @@
 package ua.dudka.account.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import ua.dudka.hrm.application.config.EmployeeConfig;
+import ua.dudka.account.application.config.AccountConfig;
 import ua.dudka.account.domain.model.Account;
-import ua.dudka.hrm.repository.EmployeeRepository;
+import ua.dudka.account.repository.AccountRepository;
+import ua.dudka.hrm.application.config.EmployeeConfig;
 
 /**
  * @author Rostislav Dudka
@@ -14,7 +16,7 @@ import ua.dudka.hrm.repository.EmployeeRepository;
 @RequiredArgsConstructor
 public class CurrentAccountReaderImpl implements CurrentAccountReader {
 
-    private final EmployeeRepository employeeRepository;
+    private final AccountRepository accountRepository;
 
     @Override
     public Account read() {
@@ -23,8 +25,8 @@ public class CurrentAccountReaderImpl implements CurrentAccountReader {
             email = SecurityContextHolder.getContext().getAuthentication().getName();
         } catch (Exception e) {
             //possible only if no-security profile
-            email = EmployeeConfig.DEV_EMPLOYEE_USERNAME;
+            email = AccountConfig.DEV_ACCOUNT_EMAIL;
         }
-        return employeeRepository.findByEmail(email).get().getAccount();
+        return accountRepository.findByEmail(email).get();
     }
 }

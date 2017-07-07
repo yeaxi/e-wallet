@@ -7,14 +7,18 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import ua.dudka.abstract_test.AbstractWebIntegrationTest;
-import ua.dudka.hrm.domain.model.company.Company;
-import ua.dudka.hrm.application.CurrentCompanyReader;
-import ua.dudka.hrm.domain.service.EmployeeEditor;
-import ua.dudka.hrm.web.dto.EditEmployeeRequest;
+import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
+import ua.dudka.account.repository.AccountRepository;
+import ua.dudka.hrm.application.CurrentCompanyReader;
+import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
+import ua.dudka.hrm.domain.service.EmployeeEditor;
 import ua.dudka.hrm.repository.EmployeeRepository;
+import ua.dudka.hrm.web.dto.EditEmployeeRequest;
+
+import java.util.Optional;
 
 import static java.math.BigDecimal.valueOf;
 import static org.mockito.Matchers.eq;
@@ -41,6 +45,9 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
     private CurrentCompanyReader currentCompanyReader;
 
     @MockBean
+    private AccountRepository accountRepository;
+
+    @MockBean
     private EmployeeRepository employeeRepository;
 
     @MockBean
@@ -63,7 +70,9 @@ public class EditEmployeeControllerIntegrationTest extends AbstractWebIntegratio
     @Before
     public void setUpMock() throws Exception {
         when(currentCompanyReader.read()).thenReturn(testCompany);
+        when(accountRepository.findByNumber(eq(testCompany.getId()))).thenReturn(Optional.of(new Account()));
         when(employeeRepository.findOne(eq(EMPLOYEE_ID))).thenReturn(testEmployee);
+
     }
 
     @Test

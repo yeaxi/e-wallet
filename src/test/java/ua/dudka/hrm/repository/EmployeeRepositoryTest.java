@@ -53,7 +53,6 @@ public class EmployeeRepositoryTest extends AbstractRepositoryTest {
         Employee savedEmployee = repository.save(testEmployee);
 
         assertNotNull(savedEmployee);
-        assertNotNull(savedEmployee.getAccount());
 
         assertEquals(testEmployee, savedEmployee);
     }

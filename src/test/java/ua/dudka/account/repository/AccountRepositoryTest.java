@@ -8,7 +8,6 @@ import ua.dudka.abstract_test.AbstractRepositoryTest;
 import ua.dudka.account.domain.model.Account;
 import ua.dudka.account.domain.model.Currency;
 import ua.dudka.account.domain.model.vo.Wallets;
-import ua.dudka.account.repository.AccountRepository;
 
 import static org.junit.Assert.*;
 
@@ -28,12 +27,13 @@ public class AccountRepositoryTest extends AbstractRepositoryTest {
 
     @After
     public void tearDown() throws Exception {
-
+        accountRepository.deleteAll();
     }
 
     @Test
     public void accountShouldSave() throws Exception {
         Account account = accountRepository.save(new Account());
+
         assertNotNull(account);
         assertNotNull(account.getNumber());
 

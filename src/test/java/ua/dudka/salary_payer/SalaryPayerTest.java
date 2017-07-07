@@ -8,8 +8,6 @@ import ua.dudka.hrm.domain.model.company.Company;
 import ua.dudka.hrm.domain.model.employee.Employee;
 import ua.dudka.hrm.domain.model.employee.Salary;
 
-import java.math.BigDecimal;
-
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -29,7 +27,7 @@ public class SalaryPayerTest {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        testCompany = new Company(BigDecimal.valueOf(1_000_000));
+        testCompany = new Company();
         testEmployee = new Employee();
         testCompany.addEmployee(testEmployee);
 

@@ -4,9 +4,12 @@ import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
-import ua.dudka.account.domain.model.Account;
+import ua.dudka.hrm.domain.model.company.Company;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 
 /**
@@ -14,7 +17,7 @@ import java.time.LocalDate;
  */
 @Entity
 @Getter
-@EqualsAndHashCode(exclude = {"id", "account"})
+@EqualsAndHashCode(exclude = {"id", "company"})
 @ToString
 @Builder
 public class Employee {
@@ -31,8 +34,8 @@ public class Employee {
     private final LocalDate enrollDate;
     private Salary salary;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Account account;
+    @ManyToOne
+    private Company company;
 
     public Employee() {
         name = "";
@@ -43,10 +46,10 @@ public class Employee {
         position = "";
         enrollDate = LocalDate.now();
         salary = new Salary();
-        account = new Account();
     }
 
-    private Employee(String name, String surname, String email, String phoneNumber, String position, Salary salary) {
+    private Employee(String name, String surname, String email,
+                     String phoneNumber, String position, Salary salary, Company company) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -54,8 +57,8 @@ public class Employee {
         this.phoneNumber = phoneNumber;
         this.position = position;
         this.salary = salary;
-        this.account = new Account();
         this.enrollDate = LocalDate.now();
+        this.company = company;
     }
 
     public void changeSalary(Salary salary) {
@@ -68,7 +71,7 @@ public class Employee {
 
     public static class EmployeeBuilder {
         public Employee build() {
-            return new Employee(this.name, this.surname, this.email, this.phoneNumber, this.position, this.salary);
+            return new Employee(this.name, this.surname, this.email, this.phoneNumber, this.position, this.salary, this.company);
         }
     }
 

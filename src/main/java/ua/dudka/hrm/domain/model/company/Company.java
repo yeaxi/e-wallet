@@ -4,13 +4,9 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import ua.dudka.account.domain.model.Account;
-import ua.dudka.account.domain.model.vo.MonetaryAmount;
 import ua.dudka.hrm.domain.model.employee.Employee;
-import ua.dudka.hrm.domain.model.employee.Salary;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +16,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @Getter
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = "employees")
 @ToString
 public class Company {
 
@@ -28,22 +24,13 @@ public class Company {
     @GeneratedValue
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private Account account = new Account();
+    private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "company", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Employee> employees = new HashSet<>();
 
-    public Company(BigDecimal initialBalance) {
-        this.account = new Account(initialBalance);
-    }
-
-    public void paySalary(Employee employee) {
-        Salary salary = employee.getSalary();
-
-        MonetaryAmount amount = MonetaryAmount.of(salary.getAmount(), salary.getCurrency());
-        account.withdraw(amount);
-        employee.getAccount().refill(amount);
+    public Company(String email) {
+        this.email = email;
     }
 
     public void addEmployee(Employee employee) {
