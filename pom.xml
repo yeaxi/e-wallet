@@ -4,11 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ua.dudka</groupId>
-    <artifactId>e-wallet</artifactId>
+    <artifactId>walletman</artifactId>
     <version>1.0.0</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>e-wallet</module>
+        <module>hrms</module>
+    </modules>
+    <packaging>pom</packaging>
 
-    <name>e-wallet</name>
+    <name>walletman</name>
 
 
     <parent>
@@ -27,10 +31,10 @@
 
 
     <dependencies>
-        <!--web-->
+        <!--ua.dudka.web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-ua.dudka.web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
