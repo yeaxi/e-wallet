@@ -5,18 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>walletman</artifactId>
         <groupId>ua.dudka</groupId>
+        <artifactId>hrms</artifactId>
         <version>1.0.0</version>
     </parent>
 
-
-    <artifactId>hrms</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>main</module>
-        <module>salary-payer</module>
-    </modules>
+    <artifactId>salary-payer</artifactId>
+    <version>1.0.0</version>
 
 </project>

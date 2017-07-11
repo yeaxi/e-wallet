@@ -6,6 +6,7 @@
     <groupId>ua.dudka</groupId>
     <artifactId>walletman</artifactId>
     <version>1.0.0</version>
+
     <modules>
         <module>e-wallet</module>
         <module>hrms</module>
@@ -31,10 +32,10 @@
 
 
     <dependencies>
-        <!--ua.dudka.web-->
+        <!--web-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-ua.dudka.web</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
