@@ -2,14 +2,17 @@ package ua.dudka.application.event.handler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.stereotype.Component;
-import ua.dudka.application.event.dto.CompanyCreatedEvent;
+import ua.dudka.application.event.channel.SalaryPayerChannels;
 import ua.dudka.application.event.dto.EmployeeCreatedEvent;
 import ua.dudka.domain.model.Company;
 import ua.dudka.domain.model.Employee;
 import ua.dudka.repository.CompanyRepository;
 
 import javax.persistence.EntityNotFoundException;
+
+import static ua.dudka.application.event.channel.SalaryPayerChannels.EMPLOYEE_CREATED_CHANNEL_NAME;
 
 /**
  * @author Rostislav Dudka
@@ -20,6 +23,7 @@ import javax.persistence.EntityNotFoundException;
 public class EmployeeCreatedEventHandler {
     private final CompanyRepository companyRepository;
 
+    @StreamListener(EMPLOYEE_CREATED_CHANNEL_NAME)
     public void handle(EmployeeCreatedEvent event) {
         logEvent(event);
         Company company = findCompanyOrThrowException(event);
