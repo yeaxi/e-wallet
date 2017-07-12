@@ -2,6 +2,8 @@ package ua.dudka.application;
 
 import org.junit.Before;
 import org.junit.Test;
+import ua.dudka.EWalletApplication;
+import ua.dudka.application.config.AccountConfig;
 import ua.dudka.domain.model.Account;
 import ua.dudka.repository.AccountRepository;
 
@@ -26,7 +28,7 @@ public class CurrentAccountReaderTest {
         AccountRepository accountRepository = mock(AccountRepository.class);
 
         testAccount = new Account(1, "mail", "password");
-        when(accountRepository.findByEmail(eq(testAccount.getEmail()))).thenReturn(Optional.of(testAccount));
+        when(accountRepository.findByEmail(eq(AccountConfig.DEV_ACCOUNT_EMAIL))).thenReturn(Optional.of(testAccount));
 
         currentAccountReader = new CurrentAccountReaderImpl(accountRepository);
     }
