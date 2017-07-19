@@ -1,5 +1,6 @@
 package ua.dudka.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -33,6 +34,7 @@ public class Employee {
     private Salary salary;
 
     @ManyToOne
+    @JsonIgnore
     private Company company;
 
     public Employee() {

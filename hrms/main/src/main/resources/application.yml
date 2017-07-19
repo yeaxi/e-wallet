@@ -7,7 +7,9 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
-
+  jackson:
+    serialization:
+      write_dates_as_timestamps: false
 ---
 spring:
   profiles: dev
@@ -23,9 +25,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/hrms?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
     username: postgres
     password: root
-
-
-
 ---
 spring:
   profiles: security

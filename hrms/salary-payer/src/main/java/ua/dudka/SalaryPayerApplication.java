@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.cloud.stream.annotation.EnableBinding;
-import ua.dudka.application.event.TransferMoneyRequestSender;
+import ua.dudka.application.event.SalaryPayerChannels;
 
 /**
  * @author Rostislav Dudka
@@ -13,7 +13,7 @@ import ua.dudka.application.event.TransferMoneyRequestSender;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableFeignClients
-@EnableBinding(TransferMoneyRequestSender.class)
+@EnableBinding(SalaryPayerChannels.class)
 public class SalaryPayerApplication {
 
     public static void main(String[] args) {
