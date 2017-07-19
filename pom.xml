@@ -10,6 +10,7 @@
     <modules>
         <module>e-wallet</module>
         <module>hrms</module>
+        <module>eureka-service</module>
     </modules>
     <packaging>pom</packaging>
 
