@@ -9,6 +9,7 @@
 
     <modules>
         <module>e-wallet</module>
+        <module>hrms</module>
     </modules>
     <packaging>pom</packaging>
 

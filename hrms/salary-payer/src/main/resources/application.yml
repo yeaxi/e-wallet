@@ -1,0 +1,44 @@
+server:
+  port: 8082
+
+spring:
+  profiles:
+    active: dev, enable-scheduling
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.show_sql: false
+      hibernate.format_sql: false
+      hibernate.hbm2ddl.auto: update
+      hibernate.enable_lazy_load_no_trans: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/hrms?currentSchem=salary_payer&auseSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
+    username: postgres
+    password: root
+
+  cloud:
+    stream:
+      bindings:
+
+       transfer_money_channel:
+        destination: transfer_money.exchange
+        contentType: application/json
+
+       company_created_channel:
+        destination: company_created.exchange
+        contentType: application/json
+        durableSubscription: true
+        group: company_created.group
+
+       employee_created_channel:
+        destination: employee_created.exchange
+        contentType: application/json
+        durableSubscription: true
+        group: employee_created.group
+
+       employee_salary_changed_channel:
+        destination: employee_salary_changed.exchange
+        contentType: application/json
+        durableSubscription: true
+        group: employee_salary_changed.group

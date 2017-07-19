@@ -1,0 +1,41 @@
+server:
+  port: 8082
+
+spring:
+  profiles:
+    active: dev, security
+  thymeleaf:
+    mode: LEGACYHTML5
+    cache: false
+
+---
+spring:
+  profiles: dev
+  jpa:
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+      hibernate.show_sql: false
+      hibernate.format_sql: false
+      hibernate.hbm2ddl.auto: update
+      hibernate.enable_lazy_load_no_trans: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/hrms?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
+    username: postgres
+    password: root
+
+
+
+---
+spring:
+  profiles: security
+security:
+  basic:
+    enabled: true
+
+---
+spring:
+  profiles: no-security
+security:
+  basic:
+    enabled: false
