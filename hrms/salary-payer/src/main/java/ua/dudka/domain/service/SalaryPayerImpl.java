@@ -2,8 +2,8 @@ package ua.dudka.domain.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ua.dudka.application.event.dto.TransferMoneyRequest;
-import ua.dudka.application.event.sender.TransferMoneyRequestSender;
+import ua.dudka.application.event.TransferMoneyRequest;
+import ua.dudka.application.event.TransferMoneyRequestSender;
 import ua.dudka.domain.model.Company;
 import ua.dudka.domain.model.Employee;
 import ua.dudka.domain.model.Salary;

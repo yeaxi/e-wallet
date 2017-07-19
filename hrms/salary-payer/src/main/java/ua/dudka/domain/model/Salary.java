@@ -3,13 +3,11 @@ package ua.dudka.domain.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.persistence.Embeddable;
 import java.math.BigDecimal;
 
 /**
  * @author Rostislav Dudka
  */
-@Embeddable
 @AllArgsConstructor
 @Data
 public class Salary {

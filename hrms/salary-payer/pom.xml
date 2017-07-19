@@ -13,4 +13,11 @@
     <artifactId>salary-payer</artifactId>
     <version>1.0.0</version>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-feign</artifactId>
+        </dependency>
+    </dependencies>
 </project>

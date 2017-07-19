@@ -1,4 +1,4 @@
-package ua.dudka.application.event.dto;
+package ua.dudka.application.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
