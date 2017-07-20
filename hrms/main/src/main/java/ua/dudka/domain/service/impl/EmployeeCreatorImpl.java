@@ -1,10 +1,10 @@
 package ua.dudka.domain.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import ua.dudka.application.CurrentCompanyReader;
-import ua.dudka.application.event.UserCreatedEvent;
+import ua.dudka.application.event.dto.UserCreatedEvent;
+import ua.dudka.application.event.publisher.UserCreatedEventPublisher;
 import ua.dudka.domain.model.Company;
 import ua.dudka.domain.model.Employee;
 import ua.dudka.domain.service.EmployeeCreator;
@@ -21,7 +21,7 @@ public class EmployeeCreatorImpl implements EmployeeCreator {
 
     private final EmployeeRepository employeeRepository;
     private final CurrentCompanyReader currentCompanyReader;
-    private final ApplicationEventPublisher publisher;
+    private final UserCreatedEventPublisher publisher;
 
     @Override
     public void create(CreateEmployeeRequest request) {
@@ -32,7 +32,7 @@ public class EmployeeCreatorImpl implements EmployeeCreator {
 
         employee = employeeRepository.save(employee);
         String password = employee.getEmail();
-        publisher.publishEvent(new UserCreatedEvent(employee.getId(), employee.getEmail(), password));
+        publisher.publish(new UserCreatedEvent(employee.getId(), employee.getEmail(), password));
     }
 
     private void validate(CreateEmployeeRequest request) {

@@ -2,8 +2,8 @@ package ua.dudka.application;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.springframework.context.ApplicationEventPublisher;
-import ua.dudka.application.event.UserCreatedEvent;
+import ua.dudka.application.event.dto.UserCreatedEvent;
+import ua.dudka.application.event.publisher.UserCreatedEventPublisher;
 import ua.dudka.domain.model.Company;
 import ua.dudka.repository.CompanyRepository;
 
@@ -18,7 +18,7 @@ public class CompanyCreatorTest {
 
     private static final String COMPANY_MAIL = "UA_DUDKA@mail.com";
     private CompanyRepository repository;
-    private ApplicationEventPublisher publisher;
+    private UserCreatedEventPublisher publisher;
 
     private CompanyCreator creator;
 
@@ -27,7 +27,7 @@ public class CompanyCreatorTest {
         repository = mock(CompanyRepository.class);
         when(repository.save(any(Company.class))).thenAnswer(invocation -> invocation.getArguments()[0]);
 
-        publisher = mock(ApplicationEventPublisher.class);
+        publisher = mock(UserCreatedEventPublisher.class);
 
         creator = new CompanyCreatorImpl(repository, publisher);
     }
@@ -45,6 +45,6 @@ public class CompanyCreatorTest {
 
         String password = company.getEmail();
         UserCreatedEvent event = new UserCreatedEvent(company.getId(), company.getEmail(), password);
-        verify(publisher).publishEvent(eq(event));
+        verify(publisher).publish(eq(event));
     }
 }

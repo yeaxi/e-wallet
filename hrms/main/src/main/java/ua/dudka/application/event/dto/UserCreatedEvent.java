@@ -1,4 +1,4 @@
-package ua.dudka.application.event;
+package ua.dudka.application.event.dto;
 
 import lombok.Value;
 

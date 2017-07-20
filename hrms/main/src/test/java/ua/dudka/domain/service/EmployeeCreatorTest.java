@@ -4,7 +4,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.springframework.context.ApplicationEventPublisher;
 import ua.dudka.application.CurrentCompanyReader;
-import ua.dudka.application.event.UserCreatedEvent;
+import ua.dudka.application.event.dto.UserCreatedEvent;
+import ua.dudka.application.event.publisher.UserCreatedEventPublisher;
 import ua.dudka.domain.model.Company;
 import ua.dudka.domain.model.Currency;
 import ua.dudka.domain.model.Employee;
@@ -31,7 +32,7 @@ public class EmployeeCreatorTest {
 
     private static EmployeeRepository employeeRepository;
     private static CurrentCompanyReader companyReader;
-    private static ApplicationEventPublisher publisher;
+    private static UserCreatedEventPublisher publisher;
 
     private static EmployeeCreator employeeCreator;
 
@@ -59,7 +60,7 @@ public class EmployeeCreatorTest {
     }
 
     private static void setUpPublisher() {
-        publisher = mock(ApplicationEventPublisher.class);
+        publisher = mock(UserCreatedEventPublisher.class);
     }
 
     private static void setUpEmployeeCreator() {
@@ -84,7 +85,7 @@ public class EmployeeCreatorTest {
         employeeCreator.create(request);
 
         String password = request.getEmail();
-        verify(publisher).publishEvent(eq(new UserCreatedEvent(new Employee().getId(), request.getEmail(), password)));
+        verify(publisher).publish(eq(new UserCreatedEvent(new Employee().getId(), request.getEmail(), password)));
     }
 
     private CreateEmployeeRequest buildCreateEmployeeRequest() {

@@ -7,7 +7,7 @@ import lombok.Value;
  */
 @Value
 public class UserCreatedEvent {
-    private final int userId;
+    private final int id;
     private final String email;
     private final String password;
 }

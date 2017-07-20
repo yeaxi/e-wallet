@@ -7,7 +7,15 @@ spring:
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
-
+  cloud:
+    stream:
+      bindings:
+       transfer_money_channel:
+        destination: transfer_money.exchange
+        group: e-wallet
+       user_created_channel:
+        destination: user_created.exchange
+        group: e-wallet
 ---
 spring:
   profiles: dev
@@ -24,7 +32,7 @@ spring:
     username: postgres
     password: root
 
-
+debug: true
 
 ---
 spring:

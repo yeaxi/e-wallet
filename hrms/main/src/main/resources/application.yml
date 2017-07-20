@@ -10,6 +10,12 @@ spring:
   jackson:
     serialization:
       write_dates_as_timestamps: false
+  cloud:
+    stream:
+      bindings:
+       user_created_channel:
+        destination: user_created.exchange
+        contentType: application/json
 ---
 spring:
   profiles: dev
@@ -25,6 +31,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/hrms?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
     username: postgres
     password: root
+
 ---
 spring:
   profiles: security

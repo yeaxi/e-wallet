@@ -30,6 +30,6 @@ public class UserCreatedEventHandlerTest {
 
         handler.handle(event);
 
-        verify(accountRepository).save(eq(new Account(event.getUserId(), event.getEmail(), event.getPassword())));
+        verify(accountRepository).save(eq(new Account(event.getId(), event.getEmail(), event.getPassword())));
     }
 }

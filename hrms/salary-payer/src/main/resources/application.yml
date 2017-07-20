@@ -7,7 +7,6 @@ spring:
   cloud:
     stream:
       bindings:
-
        transfer_money_channel:
         destination: transfer_money.exchange
         contentType: application/json
