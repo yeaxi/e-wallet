@@ -11,6 +11,7 @@
         <module>e-wallet</module>
         <module>hrms</module>
         <module>eureka-service</module>
+        <module>hystrix-dashboard</module>
     </modules>
     <packaging>pom</packaging>
 
