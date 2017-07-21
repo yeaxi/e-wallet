@@ -32,8 +32,6 @@ spring:
     username: postgres
     password: root
 
-debug: true
-
 ---
 spring:
   profiles: security

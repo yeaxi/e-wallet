@@ -9,8 +9,8 @@ import java.util.List;
 /**
  * @author Rostislav Dudka
  */
-@FeignClient(value = "hrm-service", fallback = CompanyReaderFallback.class)
-public interface CompanyReader {
+@FeignClient(value = "hrm-service")
+interface CompanyReader {
 
     @GetMapping("/api/companies")
     List<Company> readAll();

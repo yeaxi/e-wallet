@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ua.dudka.application.reader.CompanyReader;
+import ua.dudka.application.reader.ReliableCompanyReader;
 
 /**
  * @author Rostislav Dudka
@@ -15,9 +15,8 @@ import ua.dudka.application.reader.CompanyReader;
 public class ScheduledSalaryPayer {
 
     private static final long SECOND = 1000;
-    private static final long MINUTE = SECOND * 60;
 
-    private final CompanyReader companyReader;
+    private final ReliableCompanyReader companyReader;
     private final SalaryPayer salaryPayer;
 
 
