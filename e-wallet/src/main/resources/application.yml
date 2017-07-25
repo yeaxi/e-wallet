@@ -3,22 +3,10 @@ server:
 
 spring:
   profiles:
-    active: dev, security
+    active: dev, cloud, security
   thymeleaf:
     mode: LEGACYHTML5
     cache: false
-  cloud:
-    stream:
-      bindings:
-       transfer_money_channel:
-        destination: transfer_money.exchange
-        group: e-wallet
-       user_created_channel:
-        destination: user_created.exchange
-        group: e-wallet
----
-spring:
-  profiles: dev
   jpa:
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
@@ -31,7 +19,18 @@ spring:
     url: jdbc:postgresql://localhost:5432/e-wallet?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
     username: postgres
     password: root
-
+---
+spring:
+  profiles: cloud
+  cloud:
+    stream:
+      bindings:
+       transfer_money_channel:
+        destination: transfer_money.exchange
+        group: e-wallet
+       user_created_channel:
+        destination: user_created.exchange
+        group: e-wallet
 ---
 spring:
   profiles: security
