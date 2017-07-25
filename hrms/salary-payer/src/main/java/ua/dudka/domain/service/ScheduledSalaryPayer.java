@@ -9,7 +9,7 @@ import ua.dudka.application.reader.ReliableCompanyReader;
 /**
  * @author Rostislav Dudka
  */
-@Profile("enable-scheduling")
+@Profile("scheduling")
 @Service
 @RequiredArgsConstructor
 public class ScheduledSalaryPayer {

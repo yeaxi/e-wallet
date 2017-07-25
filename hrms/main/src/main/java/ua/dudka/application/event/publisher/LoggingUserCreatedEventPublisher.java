@@ -9,7 +9,7 @@ import ua.dudka.application.event.dto.UserCreatedEvent;
  */
 @Component
 @Slf4j
-public class MockUserCreatedEventPublisher implements UserCreatedEventPublisher {
+public class LoggingUserCreatedEventPublisher implements UserCreatedEventPublisher {
     @Override
     public void publish(UserCreatedEvent event) {
         log.debug("mock publisher accepted {}", event);

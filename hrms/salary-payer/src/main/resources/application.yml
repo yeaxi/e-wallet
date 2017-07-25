@@ -3,7 +3,11 @@ server:
 
 spring:
   profiles:
-    active: dev, enable-scheduling
+    active: scheduling
+
+---
+spring:
+  profiles: cloud
   cloud:
     stream:
       bindings:

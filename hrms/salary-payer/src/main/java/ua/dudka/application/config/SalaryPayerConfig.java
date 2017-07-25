@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @author Rostislav Dudka
  */
 @Configuration
-@Profile("enable-scheduling")
+@Profile("scheduling")
 @EnableScheduling
 public class SalaryPayerConfig {
 }
