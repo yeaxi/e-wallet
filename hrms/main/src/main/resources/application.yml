@@ -10,28 +10,24 @@ spring:
   jackson:
     serialization:
       write_dates_as_timestamps: false
+  jpa:
+      properties:
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate.show_sql: false
+        hibernate.format_sql: false
+        hibernate.hbm2ddl.auto: update
+        hibernate.enable_lazy_load_no_trans: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/hrms?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
+    username: postgres
+    password: root
   cloud:
     stream:
       bindings:
        user_created_channel:
         destination: user_created.exchange
         contentType: application/json
----
-spring:
-  profiles: dev
-  jpa:
-    properties:
-      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-      hibernate.show_sql: false
-      hibernate.format_sql: false
-      hibernate.hbm2ddl.auto: update
-      hibernate.enable_lazy_load_no_trans: true
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/hrms?useSSL=false&useUnicode=true&amp;characterEncoding=UTF-8
-    username: postgres
-    password: root
-
 ---
 spring:
   profiles: security

@@ -15,8 +15,6 @@ import static ua.dudka.web.DisplayEmployeesController.Links.EMPLOYEES_PAGE_URL;
  * @author Rostislav Dudka
  */
 @SpringBootApplication
-@EnableDiscoveryClient
-@EnableBinding(HRMChannels.class)
 public class HRMSApplication {
 
     public static void main(String[] args) {
